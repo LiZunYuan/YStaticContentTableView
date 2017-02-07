@@ -1,0 +1,16 @@
+PODS:
+  - YStaticContentTableView (0.1.0)
+
+DEPENDENCIES:
+  - YStaticContentTableView (from `../`)
+
+EXTERNAL SOURCES:
+  YStaticContentTableView:
+    :path: "../"
+
+SPEC CHECKSUMS:
+  YStaticContentTableView: 9cfa2c0b7eb08d94b8fe30b8d251f0338fd022e2
+
+PODFILE CHECKSUM: 893bb98bbdd43c11280c61247901a32da7f8288b
+
+COCOAPODS: 1.1.1
