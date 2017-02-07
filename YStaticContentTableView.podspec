@@ -9,34 +9,18 @@
 Pod::Spec.new do |s|
   s.name             = 'YStaticContentTableView'
   s.version          = '0.1.0'
-  s.summary          = 'A short description of YStaticContentTableView.'
 
-# This description is used to generate tags and improve search results.
-#   * Think: What does it do? Why did you write it? What is the focus?
-#   * Try to keep it short, snappy and to the point.
-#   * Write the description between the DESC delimiters below.
-#   * Finally, don't worry about the indent, CocoaPods strips it!
-
+  s.summary          = 'Cleanly implement a table view much like those in Settings.app, using a simple, convienent block-based syntax.'
   s.description      = <<-DESC
-TODO: Add long description of the pod here.
+A subclass-able way to cleanly and neatly implement a table view much like those in Settings.app, with nice-looking fields to collect or display information, all using a simple and convienent block-based syntax
                        DESC
 
   s.homepage         = 'https://github.com/LiZunYuan/YStaticContentTableView'
-  # s.screenshots     = 'www.example.com/screenshots_1', 'www.example.com/screenshots_2'
   s.license          = { :type => 'MIT', :file => 'LICENSE' }
   s.author           = { 'LiZunYuan' => 'zunyuan.li@husor.com.cn' }
   s.source           = { :git => 'https://github.com/LiZunYuan/YStaticContentTableView.git', :tag => s.version.to_s }
-  # s.social_media_url = 'https://twitter.com/<TWITTER_USERNAME>'
 
-  s.ios.deployment_target = '8.0'
+  s.ios.deployment_target = '6.0'
 
   s.source_files = 'YStaticContentTableView/Classes/**/*'
-  
-  # s.resource_bundles = {
-  #   'YStaticContentTableView' => ['YStaticContentTableView/Assets/*.png']
-  # }
-
-  # s.public_header_files = 'Pod/Classes/**/*.h'
-  # s.frameworks = 'UIKit', 'MapKit'
-  # s.dependency 'AFNetworking', '~> 2.3'
 end
