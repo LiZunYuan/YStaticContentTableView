@@ -86,9 +86,7 @@
     [self removeCellAtIndex:rowIndex animated:YES];
 }
 - (void)removeCellAtIndex:(NSUInteger)rowIndex animated:(BOOL)animated {
-    NSMutableArray *cells = [self.staticContentCells mutableCopy];
-    [cells removeObjectAtIndex:rowIndex];
-    self.staticContentCells = [NSArray arrayWithArray:cells];
+    [self.staticContentCells removeObjectAtIndex:rowIndex];
     
     if(animated) {
         [self.tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:rowIndex inSection:self.sectionIndex]] withRowAnimation:UITableViewRowAnimationAutomatic];
@@ -98,10 +96,9 @@
     }
 }
 
-- (void) removeAllCells {
+- (void)removeAllCells {
     if(self.staticContentCells) {
-        self.staticContentCells = nil;
-        self.staticContentCells = [NSArray array];
+        [self.staticContentCells removeAllObjects];
     }
 }
 
