@@ -17,7 +17,7 @@ A subclass-able way to cleanly and neatly implement a table view much like those
 
   s.homepage         = 'https://github.com/LiZunYuan/YStaticContentTableView'
   s.license          = { :type => 'MIT', :file => 'LICENSE' }
-  s.author           = { 'LiZunYuan' => 'zunyuan.li@husor.com.cn' }
+  s.author           = { 'Leal' => 'codekami@qq.com' }
   s.source           = { :git => 'https://github.com/LiZunYuan/YStaticContentTableView.git', :tag => s.version.to_s }
 
   s.ios.deployment_target = '6.0'
