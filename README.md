@@ -76,7 +76,7 @@ for (NSInteger i = 0; i < 99; i++) {
 		//config cell
 	} whenSelected:^(NSIndexPath *indexPath) {
 		//TODO
-	} atIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]() animated:YES];
+	} atIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] animated:YES];
 }
 
 [self.tableView endUpdates]();
