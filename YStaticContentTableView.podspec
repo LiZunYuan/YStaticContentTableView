@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'YStaticContentTableView'
-  s.version          = '0.1.1'
+  s.version          = '0.1.2'
 
   s.summary          = 'Cleanly implement a table view much like those in Settings.app, using a simple, convienent block-based syntax.'
   s.description      = <<-DESC
