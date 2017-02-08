@@ -1,9 +1,9 @@
 # YStaticContentTableView
 
-[!\[CI Status]()(http://img.shields.io/travis/LiZunYuan/YStaticContentTableView.svg?style=flat)](https://travis-ci.org/LiZunYuan/YStaticContentTableView)
-[!\[Version]()(https://img.shields.io/cocoapods/v/YStaticContentTableView.svg?style=flat)](http://cocoapods.org/pods/YStaticContentTableView)
-[!\[License]()(https://img.shields.io/cocoapods/l/YStaticContentTableView.svg?style=flat)](http://cocoapods.org/pods/YStaticContentTableView)
-[!\[Platform]()(https://img.shields.io/cocoapods/p/YStaticContentTableView.svg?style=flat)](http://cocoapods.org/pods/YStaticContentTableView)
+[![CI Status](http://img.shields.io/travis/LiZunYuan/YStaticContentTableView.svg?style=flat)](https://travis-ci.org/LiZunYuan/YStaticContentTableView)
+[![Version](https://img.shields.io/cocoapods/v/YStaticContentTableView.svg?style=flat)](http://cocoapods.org/pods/YStaticContentTableView)
+[![License](https://img.shields.io/cocoapods/l/YStaticContentTableView.svg?style=flat)](http://cocoapods.org/pods/YStaticContentTableView)
+[![Platform](https://img.shields.io/cocoapods/p/YStaticContentTableView.svg?style=flat)](http://cocoapods.org/pods/YStaticContentTableView)
 
 
 
