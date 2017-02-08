@@ -157,8 +157,8 @@
 				62BCF1011E49EE6900BDF3BA /* YCustomCell.m */,
 				62BCF1051E49EE6900BDF3BA /* YListViewController.h */,
 				62BCF1021E49EE6900BDF3BA /* YListViewController.m */,
-				62BCF1001E49EE6900BDF3BA /* YMixListViewController.m */,
 				62BCF1031E49EE6900BDF3BA /* YMixListViewController.h */,
+				62BCF1001E49EE6900BDF3BA /* YMixListViewController.m */,
 				6003F594195388D20070C39A /* Supporting Files */,
 			);
 			name = "Example for YStaticContentTableView";

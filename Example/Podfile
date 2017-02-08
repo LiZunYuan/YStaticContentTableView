@@ -2,6 +2,7 @@ use_frameworks!
 
 target 'YStaticContentTableView_Example' do
   pod 'YStaticContentTableView', :path => '../'
+#  pod 'YStaticContentTableView'
 
   target 'YStaticContentTableView_Tests' do
     inherit! :search_paths
