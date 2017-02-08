@@ -69,7 +69,7 @@ pod "YStaticContentTableView"
 和上面一样，除了这些我们需要把我们的代码放在`beginUpdates`和`endUpdates`,然后保留我们所有`UITableView`的构建方式，而且还是使用不错，方便的语法。
 
 ```
-[self.tableView beginUpdates]();
+[self.tableView beginUpdates];
 
 for (NSInteger i = 0; i < 99; i++) {
 	[self.tableView insertCell:^(YStaticContentTableViewCell *staticContentCell, UITableViewCell *cell, NSIndexPath *indexPath) {
@@ -79,7 +79,7 @@ for (NSInteger i = 0; i < 99; i++) {
 	} atIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] animated:YES];
 }
 
-[self.tableView endUpdates]();
+[self.tableView endUpdates];
 ```
 
 
