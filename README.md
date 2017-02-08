@@ -31,7 +31,7 @@ it, simply add the following line to your Podfile:
 正如你看到的我们还有一个不错的`whenSelected`block，这允许去写一些代码当我们点击cell时去运行，一个好的例子比如：push 一个 `UIViewController`
 
 ```
-`- (void)viewDidLoad
+- (void)viewDidLoad
 {
 [super viewDidLoad]();
 [self.tableView enableStaticTableView]();
@@ -53,23 +53,23 @@ YCustomCell *customCell = (YCustomCell *)cell;
 }];
 }
 ```
-`
+
 ### 运行时，插入一个Cell
 这个行为就像`addCell:`除了这些，你还可以加上是否需要动画的设置
 
 ```
-`[self.tableView insertCell:^(YStaticContentTableViewCell *staticContentCell, UITableViewCell *cell, NSIndexPath *indexPath) {
+[self.tableView insertCell:^(YStaticContentTableViewCell *staticContentCell, UITableViewCell *cell, NSIndexPath *indexPath) {
 ]()//config cell
 } whenSelected:^(NSIndexPath *indexPath) {
 //TODO
 } atIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]() animated:YES];
 ```
-`
+
 ### 运行时，插入多个Cell
 和上面一样，除了这些我们需要把我们的代码放在`beginUpdates`和`endUpdates`,然后保留我们所有`UITableView`的构建方式，而且还是使用不错，方便的语法。
 
 ```
-`[self.tableView beginUpdates]();
+[self.tableView beginUpdates]();
 
 for (NSInteger i = 0; i \< 99; i++) {
 [self.tableView insertCell:^(YStaticContentTableViewCell *staticContentCell, UITableViewCell *cell, NSIndexPath *indexPath) {
