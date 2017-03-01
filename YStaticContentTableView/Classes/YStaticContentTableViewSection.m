@@ -17,27 +17,28 @@
 
 @implementation YStaticContentTableViewSection
 
-- (void)addCell:(YStaticContentTableViewCellBlock)configurationBlock {
-    [self addCell:configurationBlock whenSelected:nil];
+- (YStaticContentTableViewCell *)addCell:(YStaticContentTableViewCellBlock)configurationBlock {
+    return [self addCell:configurationBlock whenSelected:nil];
 }
 
-- (void)addCell:(YStaticContentTableViewCellBlock)configurationBlock whenSelected:(YStaticContentTableViewCellWhenSelectedBlock)whenSelectedBlock {
+- (YStaticContentTableViewCell *)addCell:(YStaticContentTableViewCellBlock)configurationBlock whenSelected:(YStaticContentTableViewCellWhenSelectedBlock)whenSelectedBlock {
     YStaticContentTableViewCell *staticContentCell = [[YStaticContentTableViewCell alloc] init];
     staticContentCell.configureBlock = configurationBlock;
     staticContentCell.whenSelectedBlock = whenSelectedBlock;
     configurationBlock(staticContentCell, nil, nil);
     [self.staticContentCells addObject:staticContentCell];
     [self _updateCellIndexPaths];
+    return staticContentCell;
 }
 
-- (void)insertCell:(YStaticContentTableViewCellBlock)configurationBlock
+- (YStaticContentTableViewCell *)insertCell:(YStaticContentTableViewCellBlock)configurationBlock
        whenSelected:(YStaticContentTableViewCellWhenSelectedBlock)whenSelectedBlock
         atIndexPath:(NSIndexPath *)indexPath
            animated:(BOOL)animated {
-    [self insertCell:configurationBlock whenSelected:whenSelectedBlock atIndexPath:indexPath animated:animated updateView:YES];
+    return [self insertCell:configurationBlock whenSelected:whenSelectedBlock atIndexPath:indexPath animated:animated updateView:YES];
 }
 
-- (void)insertCell:(YStaticContentTableViewCellBlock)configurationBlock
+- (YStaticContentTableViewCell *)insertCell:(YStaticContentTableViewCellBlock)configurationBlock
        whenSelected:(YStaticContentTableViewCellWhenSelectedBlock)whenSelectedBlock
         atIndexPath:(NSIndexPath *)indexPath animated:(BOOL)animated updateView:(BOOL)updateView {
     YStaticContentTableViewCell *staticContentCell = [[YStaticContentTableViewCell alloc] init];
@@ -55,9 +56,10 @@
             [self.tableView reloadData];
         }
     }
+    return staticContentCell;
 }
 
-- (void)addCell:(YStaticContentTableViewCellBlock)configurationBlock
+- (YStaticContentTableViewCell *)addCell:(YStaticContentTableViewCellBlock)configurationBlock
         animated:(BOOL)animated {
     YStaticContentTableViewCell *staticContentCell = [[YStaticContentTableViewCell alloc] init];
     staticContentCell.configureBlock = configurationBlock;
@@ -70,6 +72,7 @@
     } else {
         [self.tableView reloadData];
     }
+    return staticContentCell;
 }
 
 - (void)reloadCellAtIndex:(NSUInteger)rowIndex {
@@ -83,7 +86,7 @@
 }
 
 - (void)removeCellAtIndex:(NSUInteger)rowIndex {
-    [self removeCellAtIndex:rowIndex animated:YES];
+    [self removeCellAtIndex:rowIndex animated:NO];
 }
 - (void)removeCellAtIndex:(NSUInteger)rowIndex animated:(BOOL)animated {
     [self.staticContentCells removeObjectAtIndex:rowIndex];

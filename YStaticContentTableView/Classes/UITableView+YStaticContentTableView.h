@@ -17,16 +17,16 @@
 - (void)enableStaticTableView;
 - (void)enableMixStaticTableView:(id<UITableViewDelegate,UITableViewDataSource>)delegate;
 
-- (void)addSection:(YStaticContentTableViewControllerAddSectionBlock)b;
+- (YStaticContentTableViewSection *)addSection:(YStaticContentTableViewControllerAddSectionBlock)b;
 
-- (void)insertSection:(YStaticContentTableViewControllerAddSectionBlock)b
+- (YStaticContentTableViewSection *)insertSection:(YStaticContentTableViewControllerAddSectionBlock)b
                atIndex:(NSUInteger)sectionIndex;
 
-- (void)insertSection:(YStaticContentTableViewControllerAddSectionBlock)b
+- (YStaticContentTableViewSection *)insertSection:(YStaticContentTableViewControllerAddSectionBlock)b
                atIndex:(NSUInteger)sectionIndex
               animated:(BOOL)animated;
 
-- (void)insertSection:(YStaticContentTableViewControllerAddSectionBlock)b
+- (YStaticContentTableViewSection *)insertSection:(YStaticContentTableViewControllerAddSectionBlock)b
                atIndex:(NSUInteger)sectionIndex animated:(BOOL)animated
             updateView:(BOOL)updateView;
 
@@ -38,13 +38,13 @@
 - (void)reloadSectionAtIndex:(NSUInteger)sectionIndex;
 - (void)reloadSectionAtIndex:(NSUInteger)sectionIndex animated:(BOOL)animated;
 
-- (YStaticContentTableViewSection *) sectionAtIndex:(NSUInteger)sectionIndex;
+- (YStaticContentTableViewSection *)sectionAtIndex:(NSUInteger)sectionIndex;
 
-- (void)insertCell:(YStaticContentTableViewCellBlock)configurationBlock
+- (YStaticContentTableViewCell *)insertCell:(YStaticContentTableViewCellBlock)configurationBlock
         atIndexPath:(NSIndexPath *)indexPath
            animated:(BOOL)animated;
 
-- (void)insertCell:(YStaticContentTableViewCellBlock)configurationBlock
+- (YStaticContentTableViewCell *)insertCell:(YStaticContentTableViewCellBlock)configurationBlock
        whenSelected:(YStaticContentTableViewCellWhenSelectedBlock)whenSelectedBlock
         atIndexPath:(NSIndexPath *)indexPath
            animated:(BOOL)animated;

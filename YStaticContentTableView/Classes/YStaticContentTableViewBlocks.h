@@ -11,7 +11,7 @@
 
 @class YStaticContentTableViewSection, YStaticContentTableViewCell;
 
-typedef void(^YStaticContentTableViewCellBlock)(YStaticContentTableViewCell *staticContentCell, UITableViewCell *cell, NSIndexPath *indexPath);
+typedef void(^YStaticContentTableViewCellBlock)(YStaticContentTableViewCell *staticContentCell, id cell, NSIndexPath *indexPath);
 typedef void(^YStaticContentTableViewCellWhenSelectedBlock)(NSIndexPath *indexPath);
 
 typedef void(^YStaticContentTableViewControllerAddSectionBlock)(YStaticContentTableViewSection *section, NSUInteger sectionIndex);

@@ -19,14 +19,14 @@
 
 @property (nonatomic, assign) NSInteger sectionIndex;
 
-- (void)addCell:(YStaticContentTableViewCellBlock)configurationBlock;
-- (void)addCell:(YStaticContentTableViewCellBlock)configurationBlock whenSelected:(YStaticContentTableViewCellWhenSelectedBlock)whenSelectedBlock;
+- (YStaticContentTableViewCell *)addCell:(YStaticContentTableViewCellBlock)configurationBlock;
+- (YStaticContentTableViewCell *)addCell:(YStaticContentTableViewCellBlock)configurationBlock whenSelected:(YStaticContentTableViewCellWhenSelectedBlock)whenSelectedBlock;
 
-- (void)addCell:(YStaticContentTableViewCellBlock)configurationBlock animated:(BOOL)animated;
+- (YStaticContentTableViewCell *)addCell:(YStaticContentTableViewCellBlock)configurationBlock animated:(BOOL)animated;
 
-- (void)insertCell:(YStaticContentTableViewCellBlock)configurationBlock whenSelected:(YStaticContentTableViewCellWhenSelectedBlock)whenSelectedBlock atIndexPath:(NSIndexPath *)indexPath animated:(BOOL)animated;
+- (YStaticContentTableViewCell *)insertCell:(YStaticContentTableViewCellBlock)configurationBlock whenSelected:(YStaticContentTableViewCellWhenSelectedBlock)whenSelectedBlock atIndexPath:(NSIndexPath *)indexPath animated:(BOOL)animated;
 
-- (void)insertCell:(YStaticContentTableViewCellBlock)configurationBlock whenSelected:(YStaticContentTableViewCellWhenSelectedBlock)whenSelectedBlock atIndexPath:(NSIndexPath *)indexPath animated:(BOOL)animated updateView:(BOOL)updateView;
+- (YStaticContentTableViewCell *)insertCell:(YStaticContentTableViewCellBlock)configurationBlock whenSelected:(YStaticContentTableViewCellWhenSelectedBlock)whenSelectedBlock atIndexPath:(NSIndexPath *)indexPath animated:(BOOL)animated updateView:(BOOL)updateView;
 
 - (void)reloadCellAtIndex:(NSUInteger)rowIndex;
 - (void)reloadCellAtIndex:(NSUInteger)rowIndex animated:(BOOL)animated;

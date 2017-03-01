@@ -66,11 +66,11 @@
     return UITableViewAutomaticDimension;
 }
 
-- (NSString *) tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
     YStaticContentTableViewSection *sectionContent = self.staticContentSections[section];
     return sectionContent.headerTitle;
 }
-- (NSString *) tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section {
+- (NSString *)tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section {
     YStaticContentTableViewSection *sectionContent = self.staticContentSections[section];
     return sectionContent.footerTitle;
 }
@@ -85,19 +85,15 @@
     return sectionContent.footerView;
 }
 
-- (UITableViewCell *) tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     YStaticContentTableViewSection *sectionContent = self.staticContentSections[indexPath.section];
     YStaticContentTableViewCell *cellContent = [sectionContent cellForRow:indexPath.row];
     
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellContent.reuseIdentifier];
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellContent.reuseIdentifier forIndexPath:indexPath];
     
     if (cell == nil) {
         cell = [[[cellContent tableViewCellSubclass] alloc] initWithStyle:cellContent.cellStyle reuseIdentifier:cellContent.reuseIdentifier];
     }
-    
-    cell.imageView.image = nil;
-    cell.accessoryView = nil;
-    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     
     cellContent.configureBlock(cellContent, cell, indexPath);
     
@@ -105,28 +101,28 @@
 }
 
 #pragma mark - Table view delegate
-- (UITableViewCellEditingStyle) tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath {
+- (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath {
     YStaticContentTableViewSection *sectionContent = self.staticContentSections[indexPath.section];
     YStaticContentTableViewCell *cellContent = [sectionContent cellForRow:indexPath.row];
     
     return cellContent.editingStyle;
 }
 
-- (BOOL) tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
+- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
     YStaticContentTableViewSection *sectionContent = self.staticContentSections[indexPath.section];
     YStaticContentTableViewCell *cellContent = [sectionContent cellForRow:indexPath.row];
     
     return cellContent.editable;
 }
 
-- (BOOL) tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath {
+- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath {
     YStaticContentTableViewSection *sectionContent = self.staticContentSections[indexPath.section];
     YStaticContentTableViewCell *cellContent = [sectionContent cellForRow:indexPath.row];
     
     return cellContent.moveable;
 }
 
-- (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     YStaticContentTableViewSection *sectionContent = self.staticContentSections[indexPath.section];
     YStaticContentTableViewCell *cellContent = [sectionContent cellForRow:indexPath.row];
     
@@ -134,7 +130,7 @@
         cellContent.whenSelectedBlock(indexPath);
     }
 }
-- (void) scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate {
+- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate {
     [self endEditing:YES];
 }
 
@@ -155,7 +151,7 @@
     }
 }
 
-- (void)addSection:(YStaticContentTableViewControllerAddSectionBlock)b {
+- (YStaticContentTableViewSection *)addSection:(YStaticContentTableViewControllerAddSectionBlock)b {
     
     YStaticContentTableViewSection *section = [[YStaticContentTableViewSection alloc] init];
     section.tableView = self;
@@ -166,16 +162,17 @@
     [self.staticContentSections addObject:section];
     
     [self _updateSectionIndexes];
+    return section;
 }
 
-- (void) insertSection:(YStaticContentTableViewControllerAddSectionBlock)b atIndex:(NSUInteger)sectionIndex {
-    [self insertSection:b atIndex:sectionIndex animated:YES];
+- (YStaticContentTableViewSection *)insertSection:(YStaticContentTableViewControllerAddSectionBlock)b atIndex:(NSUInteger)sectionIndex {
+    return [self insertSection:b atIndex:sectionIndex animated:YES];
 }
-- (void) insertSection:(YStaticContentTableViewControllerAddSectionBlock)b atIndex:(NSUInteger)sectionIndex animated:(BOOL)animated {
-    [self insertSection:b atIndex:sectionIndex animated:YES updateView:YES];
+- (YStaticContentTableViewSection *)insertSection:(YStaticContentTableViewControllerAddSectionBlock)b atIndex:(NSUInteger)sectionIndex animated:(BOOL)animated {
+    return [self insertSection:b atIndex:sectionIndex animated:YES updateView:YES];
 }
 
-- (void) insertSection:(YStaticContentTableViewControllerAddSectionBlock)b atIndex:(NSUInteger)sectionIndex animated:(BOOL)animated updateView:(BOOL)updateView {
+- (YStaticContentTableViewSection *)insertSection:(YStaticContentTableViewControllerAddSectionBlock)b atIndex:(NSUInteger)sectionIndex animated:(BOOL)animated updateView:(BOOL)updateView {
     YStaticContentTableViewSection *section = [[YStaticContentTableViewSection alloc] init];
     b(section, sectionIndex);
     [self.staticContentSections insertObject:section atIndex:sectionIndex];
@@ -189,12 +186,13 @@
             [self reloadData];
         }
     }
+    return section;
 }
 
-- (void) removeSectionAtIndex:(NSUInteger)sectionIndex {
+- (void)removeSectionAtIndex:(NSUInteger)sectionIndex {
     [self removeSectionAtIndex:sectionIndex animated:YES];
 }
-- (void) removeSectionAtIndex:(NSUInteger)sectionIndex animated:(BOOL)animated {
+- (void)removeSectionAtIndex:(NSUInteger)sectionIndex animated:(BOOL)animated {
     [self.staticContentSections removeObjectAtIndex:sectionIndex];
     
     [self _updateSectionIndexes];
@@ -210,18 +208,18 @@
     }
 }
 
-- (void) reloadSectionAtIndex:(NSUInteger)sectionIndex {
+- (void)reloadSectionAtIndex:(NSUInteger)sectionIndex {
     [self reloadSectionAtIndex:sectionIndex animated:YES];
 }
-- (void) reloadSectionAtIndex:(NSUInteger)sectionIndex animated:(BOOL)animated {
+- (void)reloadSectionAtIndex:(NSUInteger)sectionIndex animated:(BOOL)animated {
     [self reloadSections:[NSIndexSet indexSetWithIndex:sectionIndex] withRowAnimation:animated ? UITableViewRowAnimationAutomatic : UITableViewRowAnimationNone];
 }
 
-- (YStaticContentTableViewSection *) sectionAtIndex:(NSUInteger)sectionIndex {
+- (YStaticContentTableViewSection *)sectionAtIndex:(NSUInteger)sectionIndex {
     return [self.staticContentSections objectAtIndex:sectionIndex];
 }
 
-- (void)insertCell:(YStaticContentTableViewCellBlock)configurationBlock
+- (YStaticContentTableViewCell *)insertCell:(YStaticContentTableViewCellBlock)configurationBlock
         atIndexPath:(NSIndexPath *)indexPath
            animated:(BOOL)animated {
     
@@ -231,7 +229,7 @@
             animated:YES];
 }
 
-- (void)insertCell:(YStaticContentTableViewCellBlock)configurationBlock
+- (YStaticContentTableViewCell *)insertCell:(YStaticContentTableViewCellBlock)configurationBlock
        whenSelected:(YStaticContentTableViewCellWhenSelectedBlock)whenSelectedBlock
         atIndexPath:(NSIndexPath *)indexPath
            animated:(BOOL)animated {
