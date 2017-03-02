@@ -1,8 +1,8 @@
-#import "YStaticContentTableViewCell.h"
+#import "YStaticContentTableViewCellExtraInfo.h"
 #import "objc/runtime.h"
-#import "YStaticContentTableViewCell+Private.h"
+#import "YStaticContentTableViewCellExtraInfo+Private.h"
 
-@implementation YStaticContentTableViewCell
+@implementation YStaticContentTableViewCellExtraInfo
 
 - (id)init {
 	self = [super init];
@@ -23,7 +23,7 @@
 }
 
 - (NSString *)description {
-    NSMutableString *str = [NSMutableString stringWithString:@"<YStaticContentTableViewCell"];
+    NSMutableString *str = [NSMutableString stringWithString:@"<YStaticContentTableViewCellExtraInfo"];
 
     [str appendFormat:@" reuseIdentifier='%@'", self.reuseIdentifier];
     [str appendFormat:@" tableViewCellSubclass='%@'", self.tableViewCellSubclass];
@@ -36,7 +36,7 @@
 - (NSString *)reuseIdentifier
 {
     if (!_reuseIdentifier) {
-        _reuseIdentifier = [NSString stringWithFormat:@"YStaticContentTableViewCell-%@",NSStringFromClass(self.tableViewCellSubclass)];
+        _reuseIdentifier = [NSString stringWithFormat:@"YStaticContentTableViewCellExtraInfo-%@",NSStringFromClass(self.tableViewCellSubclass)];
     }
     return _reuseIdentifier;
 }

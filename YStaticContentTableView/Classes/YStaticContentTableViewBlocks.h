@@ -9,9 +9,9 @@
 #import <Foundation/Foundation.h>
 //#import <CoreGraphics/CoreGr>
 
-@class YStaticContentTableViewSection, YStaticContentTableViewCell;
+@class YStaticContentTableViewSection, YStaticContentTableViewCellExtraInfo;
 
-typedef void(^YStaticContentTableViewCellBlock)(YStaticContentTableViewCell *staticContentCell, id cell, NSIndexPath *indexPath);
+typedef void(^YStaticContentTableViewCellBlock)(YStaticContentTableViewCellExtraInfo *staticContentCell, id cell, NSIndexPath *indexPath);
 typedef void(^YStaticContentTableViewCellWhenSelectedBlock)(NSIndexPath *indexPath);
 
 typedef void(^YStaticContentTableViewControllerAddSectionBlock)(YStaticContentTableViewSection *section, NSUInteger sectionIndex);

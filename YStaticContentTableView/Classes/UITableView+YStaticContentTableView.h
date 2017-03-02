@@ -40,11 +40,11 @@
 
 - (YStaticContentTableViewSection *)sectionAtIndex:(NSUInteger)sectionIndex;
 
-- (YStaticContentTableViewCell *)insertCell:(YStaticContentTableViewCellBlock)configurationBlock
+- (YStaticContentTableViewCellExtraInfo *)insertCell:(YStaticContentTableViewCellBlock)configurationBlock
         atIndexPath:(NSIndexPath *)indexPath
            animated:(BOOL)animated;
 
-- (YStaticContentTableViewCell *)insertCell:(YStaticContentTableViewCellBlock)configurationBlock
+- (YStaticContentTableViewCellExtraInfo *)insertCell:(YStaticContentTableViewCellBlock)configurationBlock
        whenSelected:(YStaticContentTableViewCellWhenSelectedBlock)whenSelectedBlock
         atIndexPath:(NSIndexPath *)indexPath
            animated:(BOOL)animated;

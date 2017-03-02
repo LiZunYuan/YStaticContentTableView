@@ -19,7 +19,7 @@ typedef NS_ENUM(NSInteger, YStaticContentHeightCacheType) { // 高度缓存策�
     YStaticContentHeightCacheTypeReuseIdentifier //高度对应 reuseIdentifier
 };
 
-@interface YStaticContentTableViewCell : NSObject
+@interface YStaticContentTableViewCellExtraInfo : NSObject
 
 @property (nonatomic, strong) Class tableViewCellSubclass;
 
@@ -27,7 +27,7 @@ typedef NS_ENUM(NSInteger, YStaticContentHeightCacheType) { // 高度缓存策�
 
 @property (nonatomic, assign) CGFloat cellHeight;// 默认不用填
 @property (nonatomic, assign) UITableViewCellEditingStyle editingStyle; // Defaults to 'UITableViewCellEditingStyleNone'
-@property (nonatomic, strong) NSString *reuseIdentifier; // Defaults to 'YStaticContentTableViewCell-' + tableViewCellSubclass
+@property (nonatomic, strong) NSString *reuseIdentifier; // Defaults to 'YStaticContentTableViewCellExtraInfo-' + tableViewCellSubclass
 @property (nonatomic) BOOL editable; // Defaults to 'NO'
 @property (nonatomic) BOOL moveable; // Defaults to 'NO'
 @property (nonatomic, assign) YStaticContentLayoutType layoutType; // Defaults to 'YStaticContentLayoutTypeFrame'

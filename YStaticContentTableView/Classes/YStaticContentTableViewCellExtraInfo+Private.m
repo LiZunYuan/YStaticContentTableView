@@ -1,18 +1,18 @@
 //
-//  YStaticContentTableViewCell+Private.m
+//  YStaticContentTableViewCellExtraInfo+Private.m
 //  Pods
 //
 //  Created by 李遵源 on 2017/3/2.
 //
 //
 
-#import "YStaticContentTableViewCell+Private.h"
+#import "YStaticContentTableViewCellExtraInfo+Private.h"
 #import "objc/runtime.h"
 
 
 NSString * const YStaticContentTableViewCellIndexPathKey = @"YStaticContentTableViewCellIndexPathKey";
 
-@implementation YStaticContentTableViewCell (Private)
+@implementation YStaticContentTableViewCellExtraInfo (Private)
 
 - (void)setIndexPath:(NSIndexPath *)indexPath
 {

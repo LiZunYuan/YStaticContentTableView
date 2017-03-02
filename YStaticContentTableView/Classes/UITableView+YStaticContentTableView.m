@@ -36,7 +36,7 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     YStaticContentTableViewSection *sectionContent = self.staticContentSections[indexPath.section];
-    YStaticContentTableViewCell *cellContent = [sectionContent cellForRow:indexPath.row];
+    YStaticContentTableViewCellExtraInfo *cellContent = [sectionContent cellForRow:indexPath.row];
     
     if (cellContent.cellHeight == -1) {
         if (tableView.rowHeight == -1) {
@@ -118,7 +118,7 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     YStaticContentTableViewSection *sectionContent = self.staticContentSections[indexPath.section];
-    YStaticContentTableViewCell *cellContent = [sectionContent cellForRow:indexPath.row];
+    YStaticContentTableViewCellExtraInfo *cellContent = [sectionContent cellForRow:indexPath.row];
     
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellContent.reuseIdentifier forIndexPath:indexPath];
     
@@ -134,28 +134,28 @@
 #pragma mark - Table view delegate
 - (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath {
     YStaticContentTableViewSection *sectionContent = self.staticContentSections[indexPath.section];
-    YStaticContentTableViewCell *cellContent = [sectionContent cellForRow:indexPath.row];
+    YStaticContentTableViewCellExtraInfo *cellContent = [sectionContent cellForRow:indexPath.row];
     
     return cellContent.editingStyle;
 }
 
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
     YStaticContentTableViewSection *sectionContent = self.staticContentSections[indexPath.section];
-    YStaticContentTableViewCell *cellContent = [sectionContent cellForRow:indexPath.row];
+    YStaticContentTableViewCellExtraInfo *cellContent = [sectionContent cellForRow:indexPath.row];
     
     return cellContent.editable;
 }
 
 - (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath {
     YStaticContentTableViewSection *sectionContent = self.staticContentSections[indexPath.section];
-    YStaticContentTableViewCell *cellContent = [sectionContent cellForRow:indexPath.row];
+    YStaticContentTableViewCellExtraInfo *cellContent = [sectionContent cellForRow:indexPath.row];
     
     return cellContent.moveable;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     YStaticContentTableViewSection *sectionContent = self.staticContentSections[indexPath.section];
-    YStaticContentTableViewCell *cellContent = [sectionContent cellForRow:indexPath.row];
+    YStaticContentTableViewCellExtraInfo *cellContent = [sectionContent cellForRow:indexPath.row];
     
     if(cellContent.whenSelectedBlock) {
         cellContent.whenSelectedBlock(indexPath);
@@ -250,7 +250,7 @@
     return [self.staticContentSections objectAtIndex:sectionIndex];
 }
 
-- (YStaticContentTableViewCell *)insertCell:(YStaticContentTableViewCellBlock)configurationBlock
+- (YStaticContentTableViewCellExtraInfo *)insertCell:(YStaticContentTableViewCellBlock)configurationBlock
         atIndexPath:(NSIndexPath *)indexPath
            animated:(BOOL)animated {
     
@@ -260,7 +260,7 @@
             animated:YES];
 }
 
-- (YStaticContentTableViewCell *)insertCell:(YStaticContentTableViewCellBlock)configurationBlock
+- (YStaticContentTableViewCellExtraInfo *)insertCell:(YStaticContentTableViewCellBlock)configurationBlock
        whenSelected:(YStaticContentTableViewCellWhenSelectedBlock)whenSelectedBlock
         atIndexPath:(NSIndexPath *)indexPath
            animated:(BOOL)animated {

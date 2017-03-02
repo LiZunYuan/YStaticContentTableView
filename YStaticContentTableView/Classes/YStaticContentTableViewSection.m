@@ -7,23 +7,23 @@
 //
 
 #import "YStaticContentTableViewSection.h"
-#import "YStaticContentTableViewCell+Private.h"
+#import "YStaticContentTableViewCellExtraInfo+Private.h"
 
 @interface YStaticContentTableViewSection()
 
 
-@property (nonatomic, strong) NSMutableArray<YStaticContentTableViewCell *> *staticContentCells;
+@property (nonatomic, strong) NSMutableArray<YStaticContentTableViewCellExtraInfo *> *staticContentCells;
 
 @end
 
 @implementation YStaticContentTableViewSection
 
-- (YStaticContentTableViewCell *)addCell:(YStaticContentTableViewCellBlock)configurationBlock {
+- (YStaticContentTableViewCellExtraInfo *)addCell:(YStaticContentTableViewCellBlock)configurationBlock {
     return [self addCell:configurationBlock whenSelected:nil];
 }
 
-- (YStaticContentTableViewCell *)addCell:(YStaticContentTableViewCellBlock)configurationBlock whenSelected:(YStaticContentTableViewCellWhenSelectedBlock)whenSelectedBlock {
-    YStaticContentTableViewCell *staticContentCell = [[YStaticContentTableViewCell alloc] init];
+- (YStaticContentTableViewCellExtraInfo *)addCell:(YStaticContentTableViewCellBlock)configurationBlock whenSelected:(YStaticContentTableViewCellWhenSelectedBlock)whenSelectedBlock {
+    YStaticContentTableViewCellExtraInfo *staticContentCell = [[YStaticContentTableViewCellExtraInfo alloc] init];
     staticContentCell.configureBlock = configurationBlock;
     staticContentCell.whenSelectedBlock = whenSelectedBlock;
     configurationBlock(staticContentCell, nil, nil);
@@ -32,17 +32,17 @@
     return staticContentCell;
 }
 
-- (YStaticContentTableViewCell *)insertCell:(YStaticContentTableViewCellBlock)configurationBlock
+- (YStaticContentTableViewCellExtraInfo *)insertCell:(YStaticContentTableViewCellBlock)configurationBlock
        whenSelected:(YStaticContentTableViewCellWhenSelectedBlock)whenSelectedBlock
         atIndexPath:(NSIndexPath *)indexPath
            animated:(BOOL)animated {
     return [self insertCell:configurationBlock whenSelected:whenSelectedBlock atIndexPath:indexPath animated:animated updateView:YES];
 }
 
-- (YStaticContentTableViewCell *)insertCell:(YStaticContentTableViewCellBlock)configurationBlock
+- (YStaticContentTableViewCellExtraInfo *)insertCell:(YStaticContentTableViewCellBlock)configurationBlock
        whenSelected:(YStaticContentTableViewCellWhenSelectedBlock)whenSelectedBlock
         atIndexPath:(NSIndexPath *)indexPath animated:(BOOL)animated updateView:(BOOL)updateView {
-    YStaticContentTableViewCell *staticContentCell = [[YStaticContentTableViewCell alloc] init];
+    YStaticContentTableViewCellExtraInfo *staticContentCell = [[YStaticContentTableViewCellExtraInfo alloc] init];
     staticContentCell.configureBlock = configurationBlock;
     staticContentCell.whenSelectedBlock = whenSelectedBlock;
     staticContentCell.indexPath = indexPath;
@@ -60,9 +60,9 @@
     return staticContentCell;
 }
 
-- (YStaticContentTableViewCell *)addCell:(YStaticContentTableViewCellBlock)configurationBlock
+- (YStaticContentTableViewCellExtraInfo *)addCell:(YStaticContentTableViewCellBlock)configurationBlock
         animated:(BOOL)animated {
-    YStaticContentTableViewCell *staticContentCell = [[YStaticContentTableViewCell alloc] init];
+    YStaticContentTableViewCellExtraInfo *staticContentCell = [[YStaticContentTableViewCellExtraInfo alloc] init];
     staticContentCell.configureBlock = configurationBlock;
     staticContentCell.indexPath = [NSIndexPath indexPathForRow:[self.staticContentCells count] inSection:self.sectionIndex];
     configurationBlock(staticContentCell, nil, staticContentCell.indexPath);
@@ -113,7 +113,7 @@
     if(self.headerTitle) [str appendFormat:@" headerTitle='%@'", self.headerTitle];
     if(self.footerTitle) [str appendFormat:@" footerTitle='%@'", self.footerTitle];
     
-    for(YStaticContentTableViewCell *cell in self.staticContentCells) {
+    for(YStaticContentTableViewCellExtraInfo *cell in self.staticContentCells) {
         [str appendFormat:@"\n      %@", [cell description]];
     }
     
@@ -124,7 +124,7 @@
 
 - (void)_updateCellIndexPaths {
     NSInteger updatedRowIndex = 0;
-    for(YStaticContentTableViewCell *cell in self.staticContentCells) {
+    for(YStaticContentTableViewCellExtraInfo *cell in self.staticContentCells) {
         cell.indexPath = [NSIndexPath indexPathForRow:updatedRowIndex inSection:self.sectionIndex];
         updatedRowIndex++;
     }
@@ -134,13 +134,13 @@
     return [self staticContentCells].count;
 }
 
-- (YStaticContentTableViewCell *)cellForRow:(NSInteger)row
+- (YStaticContentTableViewCellExtraInfo *)cellForRow:(NSInteger)row
 {
     return [self staticContentCells][row];
 }
 
 #pragma mark - lazyload
-- (NSMutableArray<YStaticContentTableViewCell *> *)staticContentCells
+- (NSMutableArray<YStaticContentTableViewCellExtraInfo *> *)staticContentCells
 {
     if (_staticContentCells == nil) {
         _staticContentCells = [NSMutableArray array];

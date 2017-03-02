@@ -24,7 +24,7 @@ pod "YStaticContentTableView"
 ## 示例
 ### 添加section和cell
 这个一个添加section和cell到你的UITableView上的简单例子，需要把你的代码写在控制器的，`viewDidLoad`方法里。把tableView开启静态表格模式`[self.tableView enableStaticTableView]`,
-这里你可能需要引入头文件`YStaticContentTableView.h `。你可以和平时一样配置`UITableViewCell`，当然我们也提供`YStaticContentTableViewCell`对象来设置Cell的样式和复用ID。
+这里你可能需要引入头文件`YStaticContentTableView.h `。你可以和平时一样配置`UITableViewCell`，当然我们也提供`YStaticContentTableViewCellExtraInfo`对象来设置Cell的样式和复用ID。
 
 `YStaticContentTableViewSection`允许你来设置诸如Section标题等。
 
@@ -38,7 +38,7 @@ pod "YStaticContentTableView"
     
     __weak typeof(self) weakSelf = self;
     [self.tableView addSection:^(YStaticContentTableViewSection *section, NSUInteger sectionIndex) {
-        [section addCell:^(YStaticContentTableViewCell *staticContentCell, UITableViewCell *cell, NSIndexPath *indexPath) {
+        [section addCell:^(YStaticContentTableViewCellExtraInfo *staticContentCell, UITableViewCell *cell, NSIndexPath *indexPath) {
             staticContentCell.reuseIdentifier = @"UIControlCell";
             staticContentCell.tableViewCellSubclass = [YCustomCell class];
             
@@ -58,7 +58,7 @@ pod "YStaticContentTableView"
 这个行为就像`addCell:`除了这些，你还可以加上是否需要动画的设置
 
 ```
-[self.tableView insertCell:^(YStaticContentTableViewCell *staticContentCell, UITableViewCell *cell, NSIndexPath *indexPath) {
+[self.tableView insertCell:^(YStaticContentTableViewCellExtraInfo *staticContentCell, UITableViewCell *cell, NSIndexPath *indexPath) {
 	//config cell
 } whenSelected:^(NSIndexPath *indexPath) {
 	//TODO
@@ -72,7 +72,7 @@ pod "YStaticContentTableView"
 [self.tableView beginUpdates];
 
 for (NSInteger i = 0; i < 99; i++) {
-	[self.tableView insertCell:^(YStaticContentTableViewCell *staticContentCell, UITableViewCell *cell, NSIndexPath *indexPath) {
+	[self.tableView insertCell:^(YStaticContentTableViewCellExtraInfo *staticContentCell, UITableViewCell *cell, NSIndexPath *indexPath) {
 		//config cell
 	} whenSelected:^(NSIndexPath *indexPath) {
 		//TODO
