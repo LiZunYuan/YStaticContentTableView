@@ -7,6 +7,7 @@
 //
 
 #import "UITableView+YStaticContentTableView.h"
+#import "UITableView+FDTemplateLayoutCell.h"
 #import <Objc/runtime.h>
 
 
@@ -39,7 +40,37 @@
     
     if (cellContent.cellHeight == -1) {
         if (tableView.rowHeight == -1) {
-            return UITableViewAutomaticDimension;
+
+            // Hit cache
+            if (cellContent.heightCacheType == YStaticContentHeightCacheTypeIndexPath) {
+                if ([self.fd_indexPathHeightCache existsHeightAtIndexPath:indexPath]) {
+                    return [self.fd_indexPathHeightCache heightForIndexPath:indexPath];
+                }
+            } else {
+                if ([self.fd_keyedHeightCache existsHeightForKey:cellContent.reuseIdentifier]) {
+                    return [self.fd_keyedHeightCache heightForKey:cellContent.reuseIdentifier];
+                }
+            }
+            CGFloat cellHeight = [self fd_heightForCellWithIdentifier:cellContent.reuseIdentifier configuration:^(UITableViewCell *cell) {
+                cellContent.configureBlock(nil, cell, indexPath);
+                //如果一个约束都没事 就变成frameLayout
+                if (cell.constraints.count == 0) {
+                    cell.fd_enforceFrameLayout = YES;
+                } else {
+                    if (cellContent.layoutType == YStaticContentLayoutTypeFrame) {
+                        cell.fd_enforceFrameLayout = YES;
+                    } else {
+                        cell.fd_enforceFrameLayout = NO;
+                    }
+                }
+            }];
+            
+            if (cellContent.heightCacheType == YStaticContentHeightCacheTypeIndexPath) {
+                [self.fd_indexPathHeightCache cacheHeight:cellHeight byIndexPath:indexPath];
+            } else {
+                [self.fd_keyedHeightCache cacheHeight:cellHeight byKey:cellContent.reuseIdentifier];
+            }
+            return cellHeight;
         }
         return tableView.rowHeight;
     }

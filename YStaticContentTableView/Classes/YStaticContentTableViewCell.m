@@ -1,18 +1,8 @@
 #import "YStaticContentTableViewCell.h"
+#import "objc/runtime.h"
+#import "YStaticContentTableViewCell+Private.h"
 
 @implementation YStaticContentTableViewCell
-
-
-@synthesize cellHeight = _cellHeight;
-@synthesize cellStyle = _cellStyle;
-@synthesize tableViewCellSubclass = _tableViewCellSubclass;
-
-@synthesize configureBlock = _configureBlock;
-@synthesize whenSelectedBlock = _whenSelectedBlock;
-
-@synthesize editingStyle = _editingStyle;
-@synthesize editable = _editable;
-@synthesize moveable = _moveable;
 
 - (id)init {
 	self = [super init];
@@ -25,6 +15,9 @@
     self.editingStyle = UITableViewCellEditingStyleNone;
     self.editable = NO;
     self.moveable = NO;
+    
+    self.layoutType = YStaticContentLayoutTypeFrame;
+    self.heightCacheType = YStaticContentHeightCacheTypeIndexPath;
 
 	return self;
 }
@@ -46,6 +39,11 @@
         _reuseIdentifier = [NSString stringWithFormat:@"YStaticContentTableViewCell-%@",NSStringFromClass(self.tableViewCellSubclass)];
     }
     return _reuseIdentifier;
+}
+
+- (NSIndexPath *)indexPath
+{
+     return objc_getAssociatedObject(self, &YStaticContentTableViewCellIndexPathKey);
 }
 
 @end

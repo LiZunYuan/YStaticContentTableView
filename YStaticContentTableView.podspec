@@ -23,4 +23,6 @@ A subclass-able way to cleanly and neatly implement a table view much like those
   s.ios.deployment_target = '6.0'
 
   s.source_files = 'YStaticContentTableView/Classes/**/*'
+
+  s.dependency 'UITableView+FDTemplateLayoutCell', '~> 1.4'
 end
