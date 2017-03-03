@@ -29,6 +29,7 @@
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     return self.staticContentSections.count;
 }
+
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     YStaticContentTableViewSection *sectionContent = [self.staticContentSections objectAtIndex:section];
     return [sectionContent numberOfRowInSection];
@@ -40,7 +41,6 @@
     
     if (cellContent.cellHeight == -1) {
         if (tableView.rowHeight == -1) {
-
             // Hit cache
             if (cellContent.heightCacheType == YStaticContentHeightCacheTypeIndexPath) {
                 if ([self.fd_indexPathHeightCache existsHeightAtIndexPath:indexPath]) {

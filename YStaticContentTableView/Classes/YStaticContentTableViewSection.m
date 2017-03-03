@@ -11,7 +11,7 @@
 
 @interface YStaticContentTableViewSection()
 
-
+@property (nonatomic, strong) NSMutableSet<NSString *> *reuseIdentifiers;
 @property (nonatomic, strong) NSMutableArray<YStaticContentTableViewCellExtraInfo *> *staticContentCells;
 
 @end
@@ -23,13 +23,7 @@
 }
 
 - (YStaticContentTableViewCellExtraInfo *)addCell:(YStaticContentTableViewCellBlock)configurationBlock whenSelected:(YStaticContentTableViewCellWhenSelectedBlock)whenSelectedBlock {
-    YStaticContentTableViewCellExtraInfo *staticContentCell = [[YStaticContentTableViewCellExtraInfo alloc] init];
-    staticContentCell.configureBlock = configurationBlock;
-    staticContentCell.whenSelectedBlock = whenSelectedBlock;
-    configurationBlock(staticContentCell, nil, nil);
-    [self.staticContentCells addObject:staticContentCell];
-    [self _updateCellIndexPaths];
-    return staticContentCell;
+    return [self insertCell:configurationBlock whenSelected:whenSelectedBlock atIndexPath:[NSIndexPath indexPathForRow:self.staticContentCells.count inSection:0] animated:NO updateView:NO];
 }
 
 - (YStaticContentTableViewCellExtraInfo *)insertCell:(YStaticContentTableViewCellBlock)configurationBlock
@@ -45,10 +39,17 @@
     YStaticContentTableViewCellExtraInfo *staticContentCell = [[YStaticContentTableViewCellExtraInfo alloc] init];
     staticContentCell.configureBlock = configurationBlock;
     staticContentCell.whenSelectedBlock = whenSelectedBlock;
-    staticContentCell.indexPath = indexPath;
     configurationBlock(staticContentCell, nil, indexPath);
     [self.staticContentCells insertObject:staticContentCell atIndex:indexPath.row];
-    [self _updateCellIndexPaths];
+    
+    if (![self.reuseIdentifiers containsObject:staticContentCell.reuseIdentifier]) {
+        if (staticContentCell.tableViewCellSubclass) {
+            [self.tableView registerClass:staticContentCell.tableViewCellSubclass forCellReuseIdentifier:staticContentCell.reuseIdentifier];
+        } else {
+            [self.tableView registerNib:staticContentCell.tableViewCellNib forCellReuseIdentifier:staticContentCell.reuseIdentifier];
+        }
+        [self.reuseIdentifiers addObject:staticContentCell.reuseIdentifier];
+    }
     
     if (updateView) {
         if(animated) {
@@ -62,18 +63,7 @@
 
 - (YStaticContentTableViewCellExtraInfo *)addCell:(YStaticContentTableViewCellBlock)configurationBlock
         animated:(BOOL)animated {
-    YStaticContentTableViewCellExtraInfo *staticContentCell = [[YStaticContentTableViewCellExtraInfo alloc] init];
-    staticContentCell.configureBlock = configurationBlock;
-    staticContentCell.indexPath = [NSIndexPath indexPathForRow:[self.staticContentCells count] inSection:self.sectionIndex];
-    configurationBlock(staticContentCell, nil, staticContentCell.indexPath);
-    [self.staticContentCells addObject:staticContentCell];
-    
-    if(animated) {
-        [self.tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:staticContentCell.indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
-    } else {
-        [self.tableView reloadData];
-    }
-    return staticContentCell;
+    return [self insertCell:configurationBlock whenSelected:nil atIndexPath:[NSIndexPath indexPathForRow:self.staticContentCells.count inSection:0] animated:animated updateView:YES];
 }
 
 - (void)reloadCellAtIndex:(NSUInteger)rowIndex {
@@ -81,7 +71,6 @@
 }
 
 - (void)reloadCellAtIndex:(NSUInteger)rowIndex animated:(BOOL)animated {
-    [self _updateCellIndexPaths];
     [self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:rowIndex inSection:self.sectionIndex]]
                           withRowAnimation:animated ? UITableViewRowAnimationAutomatic : UITableViewRowAnimationNone];
 }
@@ -116,18 +105,9 @@
     for(YStaticContentTableViewCellExtraInfo *cell in self.staticContentCells) {
         [str appendFormat:@"\n      %@", [cell description]];
     }
-    
     [str appendString:@"\n>"];
     
     return [NSString stringWithString:str];
-}
-
-- (void)_updateCellIndexPaths {
-    NSInteger updatedRowIndex = 0;
-    for(YStaticContentTableViewCellExtraInfo *cell in self.staticContentCells) {
-        cell.indexPath = [NSIndexPath indexPathForRow:updatedRowIndex inSection:self.sectionIndex];
-        updatedRowIndex++;
-    }
 }
 
 - (NSInteger)numberOfRowInSection {
@@ -146,6 +126,14 @@
         _staticContentCells = [NSMutableArray array];
     }
     return _staticContentCells;
+}
+
+- (NSMutableSet<NSString *> *)reuseIdentifiers
+{
+    if (_reuseIdentifiers == nil) {
+        _reuseIdentifiers = [NSMutableSet set];
+    }
+    return _reuseIdentifiers;
 }
 
 @end

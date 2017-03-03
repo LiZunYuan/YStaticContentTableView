@@ -25,4 +25,9 @@
     [self.btn setFrame:CGRectMake(0, 0, 200, self.frame.size.height)];
 }
 
+- (CGSize)sizeThatFits:(CGSize)size
+{
+    return CGSizeMake(size.width, 44.5);
+}
+
 @end

@@ -21,7 +21,9 @@ typedef NS_ENUM(NSInteger, YStaticContentHeightCacheType) { // 高度缓存策�
 
 @interface YStaticContentTableViewCellExtraInfo : NSObject
 
+//二选一
 @property (nonatomic, strong) Class tableViewCellSubclass;
+@property (nonatomic, strong) UINib *tableViewCellNib;
 
 @property (nonatomic, strong, readonly) NSIndexPath *indexPath; // only read
 

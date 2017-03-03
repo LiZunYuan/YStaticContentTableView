@@ -7,7 +7,7 @@
 //
 
 #import "YListViewController.h"
-#import "UITableView+YStaticContentTableView.h"
+#import "YStaticContentTableView.h"
 #import "YCustomCell.h"
 
 @interface YListViewController ()
@@ -24,7 +24,7 @@
     __weak typeof(self) weakSelf = self;
     [self.tableView addSection:^(YStaticContentTableViewSection *section, NSUInteger sectionIndex) {
         for (NSInteger i = 1; i<= 999; i++) {
-            [section addCell:^(YStaticContentTableViewCell *staticContentCell, UITableViewCell *cell, NSIndexPath *indexPath) {
+            [section addCell:^(YStaticContentTableViewCellExtraInfo *staticContentCell, UITableViewCell *cell, NSIndexPath *indexPath) {
                 staticContentCell.reuseIdentifier = @"UIControlCell";
                 staticContentCell.tableViewCellSubclass = [YCustomCell class];
                 

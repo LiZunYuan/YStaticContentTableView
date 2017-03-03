@@ -10,5 +10,6 @@
 #define YStaticContentTableView_h
 
 #import "UITableView+YStaticContentTableView.h"
+#import "YStaticContentTableViewCellExtraInfo.h"
 
 #endif /* YStaticContentTableView_h */
