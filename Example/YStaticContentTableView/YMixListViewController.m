@@ -20,7 +20,7 @@
     [super viewDidLoad];
     [self.tableView registerClass:[YCustomCell class] forCellReuseIdentifier:@"customCell"];
     
-    [self.tableView enableMixStaticTableView:self];
+    [self.tableView enableMixStaticTableView:self dataSource:self];
     
     __weak typeof(self) weakSelf = self;
     [self.tableView addSection:^(YStaticContentTableViewSection *section, NSUInteger sectionIndex) {
@@ -50,7 +50,7 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     if (section == 0) {
         //使用静态表格
-        return [tableView.staticTableViewDelegate tableView:tableView numberOfRowsInSection:section];
+        return [tableView.staticTableViewDataSource tableView:tableView numberOfRowsInSection:section];
     }
     return 5;
 }
@@ -59,7 +59,7 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     if (indexPath.section == 0) {
         //使用静态表格
-        return [tableView.staticTableViewDelegate tableView:tableView cellForRowAtIndexPath:indexPath];
+        return [tableView.staticTableViewDataSource tableView:tableView cellForRowAtIndexPath:indexPath];
     }
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"customCell" forIndexPath:indexPath];
     cell.textLabel.text = @"原始cell";

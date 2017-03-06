@@ -7,162 +7,23 @@
 //
 
 #import "UITableView+YStaticContentTableView.h"
-#import "UITableView+FDTemplateLayoutCell.h"
 #import <Objc/runtime.h>
+#import "YStaticContentTableViewDelegate.h"
+#import "YStaticContentTableViewDataSource.h"
 
 
 @implementation UITableView (YStaticContentTableView) 
 
 - (void)enableStaticTableView
 {
-    self.dataSource = self;
-    self.delegate = self;
+    self.dataSource = self.staticTableViewDataSource;
+    self.delegate = self.staticTableViewDelegate;
 }
 
-- (void)enableMixStaticTableView:(id<UITableViewDelegate,UITableViewDataSource>)delegate
+- (void)enableMixStaticTableView:(id<UITableViewDelegate>)delegate dataSource:(id<UITableViewDataSource>)dataSource
 {
-    self.dataSource = delegate;
+    self.dataSource = dataSource;
     self.delegate = delegate;
-}
-
-#pragma mark - Table view data source
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return self.staticContentSections.count;
-}
-
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    YStaticContentTableViewSection *sectionContent = [self.staticContentSections objectAtIndex:section];
-    return [sectionContent numberOfRowInSection];
-}
-
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    YStaticContentTableViewSection *sectionContent = self.staticContentSections[indexPath.section];
-    YStaticContentTableViewCellExtraInfo *cellContent = [sectionContent cellForRow:indexPath.row];
-    
-    if (cellContent.cellHeight == -1) {
-        if (tableView.rowHeight == -1) {
-            // Hit cache
-            if (cellContent.heightCacheType == YStaticContentHeightCacheTypeIndexPath) {
-                if ([self.fd_indexPathHeightCache existsHeightAtIndexPath:indexPath]) {
-                    return [self.fd_indexPathHeightCache heightForIndexPath:indexPath];
-                }
-            } else {
-                if ([self.fd_keyedHeightCache existsHeightForKey:cellContent.reuseIdentifier]) {
-                    return [self.fd_keyedHeightCache heightForKey:cellContent.reuseIdentifier];
-                }
-            }
-            CGFloat cellHeight = [self fd_heightForCellWithIdentifier:cellContent.reuseIdentifier configuration:^(UITableViewCell *cell) {
-                cellContent.configureBlock(nil, cell, indexPath);
-                //如果一个约束都没事 就变成frameLayout
-                if (cell.constraints.count == 0) {
-                    cell.fd_enforceFrameLayout = YES;
-                } else {
-                    if (cellContent.layoutType == YStaticContentLayoutTypeFrame) {
-                        cell.fd_enforceFrameLayout = YES;
-                    } else {
-                        cell.fd_enforceFrameLayout = NO;
-                    }
-                }
-            }];
-            
-            if (cellContent.heightCacheType == YStaticContentHeightCacheTypeIndexPath) {
-                [self.fd_indexPathHeightCache cacheHeight:cellHeight byIndexPath:indexPath];
-            } else {
-                [self.fd_keyedHeightCache cacheHeight:cellHeight byKey:cellContent.reuseIdentifier];
-            }
-            return cellHeight;
-        }
-        return tableView.rowHeight;
-    }
-    return cellContent.cellHeight;
-}
-
-- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
-    YStaticContentTableViewSection *sectionContent = self.staticContentSections[section];
-    UIView *headerView = sectionContent.headerView;
-    if (headerView) {
-        return CGRectGetHeight(headerView.frame);
-    }
-    
-    return UITableViewAutomaticDimension;
-}
-
-- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
-    YStaticContentTableViewSection *sectionContent = self.staticContentSections[section];
-    UIView *footerView = sectionContent.footerView;
-    if (footerView) {
-        return CGRectGetHeight(footerView.frame);
-    }
-    
-    return UITableViewAutomaticDimension;
-}
-
-- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
-    YStaticContentTableViewSection *sectionContent = self.staticContentSections[section];
-    return sectionContent.headerTitle;
-}
-- (NSString *)tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section {
-    YStaticContentTableViewSection *sectionContent = self.staticContentSections[section];
-    return sectionContent.footerTitle;
-}
-
-- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
-    YStaticContentTableViewSection *sectionContent = self.staticContentSections[section];
-    return sectionContent.headerView;
-}
-
-- (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section {
-    YStaticContentTableViewSection *sectionContent = self.staticContentSections[section];
-    return sectionContent.footerView;
-}
-
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    YStaticContentTableViewSection *sectionContent = self.staticContentSections[indexPath.section];
-    YStaticContentTableViewCellExtraInfo *cellContent = [sectionContent cellForRow:indexPath.row];
-    
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellContent.reuseIdentifier forIndexPath:indexPath];
-    
-    if (cell == nil) {
-        cell = [[[cellContent tableViewCellSubclass] alloc] initWithStyle:cellContent.cellStyle reuseIdentifier:cellContent.reuseIdentifier];
-    }
-    
-    cellContent.configureBlock(cellContent, cell, indexPath);
-    
-    return cell;
-}
-
-#pragma mark - Table view delegate
-- (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath {
-    YStaticContentTableViewSection *sectionContent = self.staticContentSections[indexPath.section];
-    YStaticContentTableViewCellExtraInfo *cellContent = [sectionContent cellForRow:indexPath.row];
-    
-    return cellContent.editingStyle;
-}
-
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
-    YStaticContentTableViewSection *sectionContent = self.staticContentSections[indexPath.section];
-    YStaticContentTableViewCellExtraInfo *cellContent = [sectionContent cellForRow:indexPath.row];
-    
-    return cellContent.editable;
-}
-
-- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath {
-    YStaticContentTableViewSection *sectionContent = self.staticContentSections[indexPath.section];
-    YStaticContentTableViewCellExtraInfo *cellContent = [sectionContent cellForRow:indexPath.row];
-    
-    return cellContent.moveable;
-}
-
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    YStaticContentTableViewSection *sectionContent = self.staticContentSections[indexPath.section];
-    YStaticContentTableViewCellExtraInfo *cellContent = [sectionContent cellForRow:indexPath.row];
-    
-    if(cellContent.whenSelectedBlock) {
-        cellContent.whenSelectedBlock(indexPath);
-    }
-}
-- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate {
-    [self endEditing:YES];
 }
 
 
@@ -383,7 +244,7 @@ static void *footerTextKey;
 - (NSMutableArray *)staticContentSections {
     static void *staticContentSectionsKey;
     NSMutableArray *_staticContentSections = objc_getAssociatedObject(self, &staticContentSectionsKey);
-    if (_staticContentSections == nil) {
+    if (!_staticContentSections) {
         objc_setAssociatedObject(self, &staticContentSectionsKey, [NSMutableArray array], OBJC_ASSOCIATION_RETAIN);
     }
     return _staticContentSections;
@@ -398,9 +259,26 @@ static void *oriTableViewDelegateKey;
     return objc_getAssociatedObject(self, &oriTableViewDelegateKey);
 }
 
-- (id<UITableViewDelegate,UITableViewDataSource>)staticTableViewDelegate
+- (id<UITableViewDataSource>)staticTableViewDataSource
 {
-    return self;
+    static void *staticTableViewDataSource;
+    id<UITableViewDataSource> _dataSource = objc_getAssociatedObject(self, &staticTableViewDataSource);
+    if (!_dataSource) {
+        _dataSource = [YStaticContentTableViewDataSource new];
+        objc_setAssociatedObject(self, &staticTableViewDataSource, _dataSource, OBJC_ASSOCIATION_RETAIN);
+    }
+    return _dataSource;
+}
+
+- (id<UITableViewDelegate>)staticTableViewDelegate
+{
+    static void *staticTableViewDelegate;
+    id<UITableViewDelegate> _delegate = objc_getAssociatedObject(self, &staticTableViewDelegate);
+    if (!_delegate) {
+        _delegate = [YStaticContentTableViewDelegate new];
+        objc_setAssociatedObject(self, &staticTableViewDelegate, _delegate, OBJC_ASSOCIATION_RETAIN);
+    }
+    return _delegate;
 }
 
 

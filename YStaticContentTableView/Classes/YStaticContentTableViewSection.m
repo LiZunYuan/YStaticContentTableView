@@ -43,10 +43,10 @@
     [self.staticContentCells insertObject:staticContentCell atIndex:indexPath.row];
     
     if (![self.reuseIdentifiers containsObject:staticContentCell.reuseIdentifier]) {
-        if (staticContentCell.tableViewCellSubclass) {
-            [self.tableView registerClass:staticContentCell.tableViewCellSubclass forCellReuseIdentifier:staticContentCell.reuseIdentifier];
-        } else {
+        if (staticContentCell.tableViewCellNib) {
             [self.tableView registerNib:staticContentCell.tableViewCellNib forCellReuseIdentifier:staticContentCell.reuseIdentifier];
+        } else {
+            [self.tableView registerClass:staticContentCell.tableViewCellSubclass forCellReuseIdentifier:staticContentCell.reuseIdentifier];
         }
         [self.reuseIdentifiers addObject:staticContentCell.reuseIdentifier];
     }

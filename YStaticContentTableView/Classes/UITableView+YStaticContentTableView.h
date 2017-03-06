@@ -15,7 +15,7 @@
 @property (nonatomic, strong) NSString *footerText;
 
 - (void)enableStaticTableView;
-- (void)enableMixStaticTableView:(id<UITableViewDelegate,UITableViewDataSource>)delegate;
+- (void)enableMixStaticTableView:(id<UITableViewDelegate>)delegate dataSource:(id<UITableViewDataSource>)dataSource;
 
 - (YStaticContentTableViewSection *)addSection:(YStaticContentTableViewControllerAddSectionBlock)b;
 
@@ -50,6 +50,7 @@
            animated:(BOOL)animated;
 
 
-- (id<UITableViewDelegate,UITableViewDataSource>)staticTableViewDelegate;
+- (id<UITableViewDataSource>)staticTableViewDataSource;
+- (id<UITableViewDelegate>)staticTableViewDelegate;
 
 @end
