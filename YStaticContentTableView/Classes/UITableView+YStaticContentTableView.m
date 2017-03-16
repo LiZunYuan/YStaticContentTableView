@@ -22,8 +22,15 @@
 
 - (void)enableMixStaticTableView:(id<UITableViewDelegate>)delegate dataSource:(id<UITableViewDataSource>)dataSource
 {
-    self.dataSource = dataSource;
-    self.delegate = delegate;
+    [self enableStaticTableView];
+    
+    if (dataSource) {
+        self.dataSource = dataSource;
+    }
+    
+    if (delegate) {
+        self.delegate = delegate;
+    }
 }
 
 
