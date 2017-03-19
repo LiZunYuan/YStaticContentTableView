@@ -114,7 +114,7 @@
     return [self staticContentCells].count;
 }
 
-- (YStaticContentTableViewCellExtraInfo *)cellForRow:(NSInteger)row
+- (YStaticContentTableViewCellExtraInfo *)cellInfoForRow:(NSInteger)row
 {
     return [self staticContentCells][row];
 }

@@ -19,7 +19,7 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     YStaticContentTableViewSection *sectionContent = tableView.staticContentSections[indexPath.section];
-    YStaticContentTableViewCellExtraInfo *cellContent = [sectionContent cellForRow:indexPath.row];
+    YStaticContentTableViewCellExtraInfo *cellContent = [sectionContent cellInfoForRow:indexPath.row];
     
     if (cellContent.cellHeight == -1) {
         if (tableView.rowHeight == -1) {
@@ -82,28 +82,28 @@
 
 - (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath {
     YStaticContentTableViewSection *sectionContent = tableView.staticContentSections[indexPath.section];
-    YStaticContentTableViewCellExtraInfo *cellContent = [sectionContent cellForRow:indexPath.row];
+    YStaticContentTableViewCellExtraInfo *cellContent = [sectionContent cellInfoForRow:indexPath.row];
     
     return cellContent.editingStyle;
 }
 
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
     YStaticContentTableViewSection *sectionContent = tableView.staticContentSections[indexPath.section];
-    YStaticContentTableViewCellExtraInfo *cellContent = [sectionContent cellForRow:indexPath.row];
+    YStaticContentTableViewCellExtraInfo *cellContent = [sectionContent cellInfoForRow:indexPath.row];
     
     return cellContent.editable;
 }
 
 - (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath {
     YStaticContentTableViewSection *sectionContent = tableView.staticContentSections[indexPath.section];
-    YStaticContentTableViewCellExtraInfo *cellContent = [sectionContent cellForRow:indexPath.row];
+    YStaticContentTableViewCellExtraInfo *cellContent = [sectionContent cellInfoForRow:indexPath.row];
     
     return cellContent.moveable;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     YStaticContentTableViewSection *sectionContent = tableView.staticContentSections[indexPath.section];
-    YStaticContentTableViewCellExtraInfo *cellContent = [sectionContent cellForRow:indexPath.row];
+    YStaticContentTableViewCellExtraInfo *cellContent = [sectionContent cellInfoForRow:indexPath.row];
     
     if(cellContent.whenSelectedBlock) {
         cellContent.whenSelectedBlock(indexPath);

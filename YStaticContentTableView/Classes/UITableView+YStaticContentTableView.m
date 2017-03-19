@@ -115,7 +115,7 @@
 }
 
 - (YStaticContentTableViewSection *)sectionAtIndex:(NSUInteger)sectionIndex {
-    return [self.staticContentSections objectAtIndex:sectionIndex];
+    return self.staticContentSections[sectionIndex];
 }
 
 - (YStaticContentTableViewCellExtraInfo *)insertCell:(YStaticContentTableViewCellBlock)configurationBlock
@@ -248,7 +248,7 @@ static void *footerTextKey;
 }
 
 #pragma mark - set get
-- (NSMutableArray *)staticContentSections {
+- (NSMutableArray<YStaticContentTableViewSection *> *)staticContentSections {
     static void *staticContentSectionsKey;
     NSMutableArray *_staticContentSections = objc_getAssociatedObject(self, &staticContentSectionsKey);
     if (!_staticContentSections) {

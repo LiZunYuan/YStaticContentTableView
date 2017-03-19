@@ -36,6 +36,6 @@
 - (void)removeCellAtIndex:(NSUInteger)rowIndex animated:(BOOL)animated;
 
 - (NSInteger)numberOfRowInSection;
-- (YStaticContentTableViewCellExtraInfo *)cellForRow:(NSInteger)row;
+- (YStaticContentTableViewCellExtraInfo *)cellInfoForRow:(NSInteger)row;
 
 @end

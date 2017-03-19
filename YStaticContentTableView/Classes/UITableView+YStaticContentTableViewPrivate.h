@@ -7,9 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "YStaticContentTableViewSection.h"
 
 @interface UITableView (YStaticContentTableViewPrivate)
 
-- (NSMutableArray *)staticContentSections;
+- (NSMutableArray<YStaticContentTableViewSection *> *)staticContentSections;
 
 @end
