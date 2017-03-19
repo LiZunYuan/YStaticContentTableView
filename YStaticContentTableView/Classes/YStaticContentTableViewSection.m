@@ -96,7 +96,7 @@
 }
 
 - (NSString *)description {
-    NSMutableString *str = [NSMutableString stringWithString:@"<JMStaticContentTableViewSection"];
+    NSMutableString *str = [NSMutableString stringWithString:@"<YStaticContentTableViewSection"];
     
     [str appendFormat:@" sectionIndex='%ld'", (long)self.sectionIndex];
     if(self.headerTitle) [str appendFormat:@" headerTitle='%@'", self.headerTitle];

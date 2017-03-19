@@ -1,5 +1,5 @@
 //
-//  JMStaticContentTableViewBlocks.h
+//  YStaticContentTableViewBlocks.h
 //  Pods
 //
 //  Created by 李遵源 on 2017/2/7.
