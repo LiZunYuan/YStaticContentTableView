@@ -8,6 +8,6 @@
 
 #import <Foundation/Foundation.h>
 
-@interface YStaticContentTableViewDelegate : NSObject
+@interface YStaticContentTableViewDelegate : NSObject<UITableViewDelegate>
 
 @end

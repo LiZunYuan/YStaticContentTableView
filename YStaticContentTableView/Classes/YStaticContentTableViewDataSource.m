@@ -10,7 +10,7 @@
 #import "UITableView+YStaticContentTableView.h"
 #import "UITableView+YStaticContentTableViewPrivate.h"
 
-@interface YStaticContentTableViewDataSource()<UITableViewDataSource>
+@interface YStaticContentTableViewDataSource()
 
 @end
 

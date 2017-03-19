@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "YStaticContentTableViewSection.h"
 
-@interface UITableView (YStaticContentTableView) <UITableViewDelegate,UITableViewDataSource>
+@interface UITableView (YStaticContentTableView)
 
 @property (nonatomic, strong) NSString *headerText;
 @property (nonatomic, strong) NSString *footerText;

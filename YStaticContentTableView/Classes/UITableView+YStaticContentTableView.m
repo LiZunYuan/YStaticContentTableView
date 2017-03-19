@@ -10,6 +10,7 @@
 #import <Objc/runtime.h>
 #import "YStaticContentTableViewDelegate.h"
 #import "YStaticContentTableViewDataSource.h"
+#import "UITableView+YStaticContentTableViewPrivate.m"
 
 
 @implementation UITableView (YStaticContentTableView) 
@@ -122,7 +123,7 @@
         atIndexPath:(NSIndexPath *)indexPath
            animated:(BOOL)animated {
     
-    [self insertCell:configurationBlock
+    return [self insertCell:configurationBlock
         whenSelected:nil
          atIndexPath:indexPath
             animated:YES];
@@ -135,7 +136,7 @@
     
     YStaticContentTableViewSection *section = [self sectionAtIndex:indexPath.section];
     
-    [section insertCell:configurationBlock 
+    return [section insertCell:configurationBlock
            whenSelected:whenSelectedBlock 
             atIndexPath:indexPath
                animated:animated];
@@ -248,14 +249,6 @@ static void *footerTextKey;
 }
 
 #pragma mark - set get
-- (NSMutableArray<YStaticContentTableViewSection *> *)staticContentSections {
-    static void *staticContentSectionsKey;
-    NSMutableArray *_staticContentSections = objc_getAssociatedObject(self, &staticContentSectionsKey);
-    if (!_staticContentSections) {
-        objc_setAssociatedObject(self, &staticContentSectionsKey, [NSMutableArray array], OBJC_ASSOCIATION_RETAIN);
-    }
-    return _staticContentSections;
-}
 
 static void *oriTableViewDelegateKey;
 - (void)setOriTableViewDelegate:(id<UITableViewDelegate,UITableViewDataSource>)delegate{

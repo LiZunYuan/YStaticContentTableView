@@ -11,7 +11,7 @@
 #import "UITableView+YStaticContentTableViewPrivate.h"
 #import "UITableView+YStaticContentTableView.h"
 
-@interface YStaticContentTableViewDelegate()<UITableViewDelegate>
+@interface YStaticContentTableViewDelegate()
 
 @end
 

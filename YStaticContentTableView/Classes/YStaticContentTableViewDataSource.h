@@ -8,6 +8,6 @@
 
 #import <Foundation/Foundation.h>
 
-@interface YStaticContentTableViewDataSource : NSObject
+@interface YStaticContentTableViewDataSource : NSObject<UITableViewDataSource>
 
 @end
