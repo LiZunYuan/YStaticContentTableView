@@ -33,16 +33,6 @@
     return sectionContent.footerTitle;
 }
 
-- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
-    YStaticContentTableViewSection *sectionContent = tableView.staticContentSections[section];
-    return sectionContent.headerView;
-}
-
-- (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section {
-    YStaticContentTableViewSection *sectionContent = tableView.staticContentSections[section];
-    return sectionContent.footerView;
-}
-
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     YStaticContentTableViewSection *sectionContent = tableView.staticContentSections[indexPath.section];
     YStaticContentTableViewCellExtraInfo *cellContent = [sectionContent cellInfoForRow:indexPath.row];

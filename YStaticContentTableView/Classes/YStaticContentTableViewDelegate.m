@@ -114,4 +114,14 @@
 }
 
 
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
+    YStaticContentTableViewSection *sectionContent = tableView.staticContentSections[section];
+    return sectionContent.headerView;
+}
+
+- (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section {
+    YStaticContentTableViewSection *sectionContent = tableView.staticContentSections[section];
+    return sectionContent.footerView;
+}
+
 @end
