@@ -1,6 +1,5 @@
 #import "YStaticContentTableViewCellExtraInfo.h"
 #import "objc/runtime.h"
-#import "YStaticContentTableViewCellExtraInfo+Private.h"
 
 @implementation YStaticContentTableViewCellExtraInfo
 
@@ -39,11 +38,6 @@
         _reuseIdentifier = [NSString stringWithFormat:@"YStaticContentTableViewCellExtraInfo-%@",NSStringFromClass(self.tableViewCellSubclass)];
     }
     return _reuseIdentifier;
-}
-
-- (NSIndexPath *)indexPath
-{
-     return objc_getAssociatedObject(self, &YStaticContentTableViewCellIndexPathKey);
 }
 
 @end

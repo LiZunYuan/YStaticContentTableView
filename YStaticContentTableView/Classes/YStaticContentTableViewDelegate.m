@@ -79,7 +79,6 @@
     return UITableViewAutomaticDimension;
 }
 
-
 - (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath {
     YStaticContentTableViewSection *sectionContent = tableView.y_staticContentSections[indexPath.section];
     YStaticContentTableViewCellExtraInfo *cellContent = [sectionContent cellInfoForRow:indexPath.row];

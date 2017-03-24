@@ -7,7 +7,6 @@
 //
 
 #import "YStaticContentTableViewSection.h"
-#import "YStaticContentTableViewCellExtraInfo+Private.h"
 
 @interface YStaticContentTableViewSection()
 
