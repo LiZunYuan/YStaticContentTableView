@@ -24,19 +24,15 @@
 - (void)y_enableMixStaticTableView:(id <UITableViewDelegate>)delegate dataSource:(id<UITableViewDataSource>)dataSource
 {
     [self y_enableStaticTableView];
-    
     if (dataSource) {
         self.dataSource = dataSource;
     }
-    
     if (delegate) {
         self.delegate = delegate;
     }
 }
 
-
 #pragma mark - Static Content
-
 - (void)y_updateSectionIndexes {
     NSInteger updatedIndex = 0;
     for(YStaticContentTableViewSection *section in self.y_staticContentSections) {
@@ -52,15 +48,11 @@
 }
 
 - (YStaticContentTableViewSection *)y_addSection:(YStaticContentTableViewControllerAddSectionBlock)b {
-    
     YStaticContentTableViewSection *section = [[YStaticContentTableViewSection alloc] init];
     section.tableView = self;
     section.sectionIndex = [self.y_staticContentSections count];
-    
     b(section, section.sectionIndex);
-    
     [self.y_staticContentSections addObject:section];
-
     [self y_updateSectionIndexes];
     return section;
 }
@@ -76,9 +68,7 @@
     YStaticContentTableViewSection *section = [[YStaticContentTableViewSection alloc] init];
     b(section, sectionIndex);
     [self.y_staticContentSections insertObject:section atIndex:sectionIndex];
-
     [self y_updateSectionIndexes];
-    
     if (updateView) {
         if(animated) {
             [self insertSections:[NSIndexSet indexSetWithIndex:sectionIndex] withRowAnimation:UITableViewRowAnimationAutomatic];
@@ -92,6 +82,7 @@
 - (void)y_removeSectionAtIndex:(NSUInteger)sectionIndex {
     [self y_removeSectionAtIndex:sectionIndex animated:YES];
 }
+
 - (void)y_removeSectionAtIndex:(NSUInteger)sectionIndex animated:(BOOL)animated {
     [self.y_staticContentSections removeObjectAtIndex:sectionIndex];
 
@@ -111,6 +102,7 @@
 - (void)y_reloadSectionAtIndex:(NSUInteger)sectionIndex {
     [self y_reloadSectionAtIndex:sectionIndex animated:YES];
 }
+
 - (void)y_reloadSectionAtIndex:(NSUInteger)sectionIndex animated:(BOOL)animated {
     [self reloadSections:[NSIndexSet indexSetWithIndex:sectionIndex] withRowAnimation:animated ? UITableViewRowAnimationAutomatic : UITableViewRowAnimationNone];
 }
@@ -122,7 +114,6 @@
 - (YStaticContentTableViewCellExtraInfo *)y_insertCell:(YStaticContentTableViewCellBlock)configurationBlock
                                            atIndexPath:(NSIndexPath *)indexPath
                                               animated:(BOOL)animated {
-    
     return [self y_insertCell:configurationBlock
                  whenSelected:nil
                   atIndexPath:indexPath
@@ -133,9 +124,7 @@
                                           whenSelected:(YStaticContentTableViewCellWhenSelectedBlock)whenSelectedBlock
                                            atIndexPath:(NSIndexPath *)indexPath
                                               animated:(BOOL)animated {
-    
     YStaticContentTableViewSection *section = [self y_sectionAtIndex:indexPath.section];
-    
     return [section insertCell:configurationBlock
            whenSelected:whenSelectedBlock 
             atIndexPath:indexPath
