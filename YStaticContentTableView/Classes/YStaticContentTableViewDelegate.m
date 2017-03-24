@@ -36,7 +36,7 @@
             CGFloat cellHeight = [tableView fd_heightForCellWithIdentifier:cellContent.reuseIdentifier configuration:^(UITableViewCell *cell) {
                 cellContent.configureBlock(nil, cell, indexPath);
                 //如果一个约束都没事 就变成frameLayout
-                if (cell.constraints.count == 0) {
+                if (cell.contentView.constraints.count == 0 && cell.constraints.count == 0) {
                     cell.fd_enforceFrameLayout = YES;
                 } else {
                     if (cellContent.layoutType == YStaticContentLayoutTypeFrame) {
