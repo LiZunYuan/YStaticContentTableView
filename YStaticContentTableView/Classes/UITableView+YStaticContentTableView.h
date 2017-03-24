@@ -28,7 +28,6 @@
                                          updateView:(BOOL)updateView;
 
 - (void)y_removeAllSections;
-
 - (void)y_removeSectionAtIndex:(NSUInteger)sectionIndex;
 - (void)y_removeSectionAtIndex:(NSUInteger)sectionIndex animated:(BOOL)animated;
 
