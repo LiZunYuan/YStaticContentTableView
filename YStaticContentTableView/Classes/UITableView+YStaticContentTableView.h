@@ -11,46 +11,43 @@
 
 @interface UITableView (YStaticContentTableView)
 
-@property (nonatomic, strong) NSString *headerText;
-@property (nonatomic, strong) NSString *footerText;
+- (void)y_enableStaticTableView;
+- (void)y_enableMixStaticTableView:(id <UITableViewDelegate>)delegate dataSource:(id<UITableViewDataSource>)dataSource;
 
-- (void)enableStaticTableView;
-- (void)enableMixStaticTableView:(id<UITableViewDelegate>)delegate dataSource:(id<UITableViewDataSource>)dataSource;
+- (YStaticContentTableViewSection *)y_addSection:(YStaticContentTableViewControllerAddSectionBlock)b;
 
-- (YStaticContentTableViewSection *)addSection:(YStaticContentTableViewControllerAddSectionBlock)b;
+- (YStaticContentTableViewSection *)y_insertSection:(YStaticContentTableViewControllerAddSectionBlock)b
+                                            atIndex:(NSUInteger)sectionIndex;
 
-- (YStaticContentTableViewSection *)insertSection:(YStaticContentTableViewControllerAddSectionBlock)b
-               atIndex:(NSUInteger)sectionIndex;
+- (YStaticContentTableViewSection *)y_insertSection:(YStaticContentTableViewControllerAddSectionBlock)b
+                                            atIndex:(NSUInteger)sectionIndex
+                                           animated:(BOOL)animated;
 
-- (YStaticContentTableViewSection *)insertSection:(YStaticContentTableViewControllerAddSectionBlock)b
-               atIndex:(NSUInteger)sectionIndex
-              animated:(BOOL)animated;
+- (YStaticContentTableViewSection *)y_insertSection:(YStaticContentTableViewControllerAddSectionBlock)b
+                                            atIndex:(NSUInteger)sectionIndex animated:(BOOL)animated
+                                         updateView:(BOOL)updateView;
 
-- (YStaticContentTableViewSection *)insertSection:(YStaticContentTableViewControllerAddSectionBlock)b
-               atIndex:(NSUInteger)sectionIndex animated:(BOOL)animated
-            updateView:(BOOL)updateView;
+- (void)y_removeAllSections;
 
-- (void)removeAllSections;
+- (void)y_removeSectionAtIndex:(NSUInteger)sectionIndex;
+- (void)y_removeSectionAtIndex:(NSUInteger)sectionIndex animated:(BOOL)animated;
 
-- (void)removeSectionAtIndex:(NSUInteger)sectionIndex;
-- (void)removeSectionAtIndex:(NSUInteger)sectionIndex animated:(BOOL)animated;
+- (void)y_reloadSectionAtIndex:(NSUInteger)sectionIndex;
+- (void)y_reloadSectionAtIndex:(NSUInteger)sectionIndex animated:(BOOL)animated;
 
-- (void)reloadSectionAtIndex:(NSUInteger)sectionIndex;
-- (void)reloadSectionAtIndex:(NSUInteger)sectionIndex animated:(BOOL)animated;
+- (YStaticContentTableViewSection *)y_sectionAtIndex:(NSUInteger)sectionIndex;
 
-- (YStaticContentTableViewSection *)sectionAtIndex:(NSUInteger)sectionIndex;
+- (YStaticContentTableViewCellExtraInfo *)y_insertCell:(YStaticContentTableViewCellBlock)configurationBlock
+                                           atIndexPath:(NSIndexPath *)indexPath
+                                              animated:(BOOL)animated;
 
-- (YStaticContentTableViewCellExtraInfo *)insertCell:(YStaticContentTableViewCellBlock)configurationBlock
-        atIndexPath:(NSIndexPath *)indexPath
-           animated:(BOOL)animated;
-
-- (YStaticContentTableViewCellExtraInfo *)insertCell:(YStaticContentTableViewCellBlock)configurationBlock
-       whenSelected:(YStaticContentTableViewCellWhenSelectedBlock)whenSelectedBlock
-        atIndexPath:(NSIndexPath *)indexPath
-           animated:(BOOL)animated;
+- (YStaticContentTableViewCellExtraInfo *)y_insertCell:(YStaticContentTableViewCellBlock)configurationBlock
+                                          whenSelected:(YStaticContentTableViewCellWhenSelectedBlock)whenSelectedBlock
+                                           atIndexPath:(NSIndexPath *)indexPath
+                                              animated:(BOOL)animated;
 
 
-- (id<UITableViewDataSource>)staticTableViewDataSource;
-- (id<UITableViewDelegate>)staticTableViewDelegate;
+- (id<UITableViewDataSource>)y_staticTableViewDataSource;
+- (id<UITableViewDelegate>)y_staticTableViewDelegate;
 
 @end

@@ -12,6 +12,6 @@ FOUNDATION_EXPORT NSString * const YStaticContentTableViewCellIndexPathKey;
 
 @interface YStaticContentTableViewCellExtraInfo (Private)
 
-- (void)setIndexPath:(NSIndexPath *)indexPath;
+//- (void)y_setIndexPath:(NSIndexPath *)indexPath;
 
 @end

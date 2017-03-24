@@ -14,7 +14,7 @@ NSString * const YStaticContentTableViewCellIndexPathKey = @"YStaticContentTable
 
 @implementation YStaticContentTableViewCellExtraInfo (Private)
 
-- (void)setIndexPath:(NSIndexPath *)indexPath
+- (void)y_setIndexPath:(NSIndexPath *)indexPath
 {
     objc_setAssociatedObject(self, &YStaticContentTableViewCellIndexPathKey, indexPath, OBJC_ASSOCIATION_COPY);
 }

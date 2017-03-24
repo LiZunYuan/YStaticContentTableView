@@ -82,7 +82,7 @@
     [self.staticContentCells removeObjectAtIndex:rowIndex];
     
     if(animated) {
-        [self.tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:rowIndex inSection:self.sectionIndex]] withRowAnimation:UITableViewRowAnimationAutomatic];
+        [self.tableView deleteRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:rowIndex inSection:self.sectionIndex]] withRowAnimation:UITableViewRowAnimationAutomatic];
         [self.tableView performSelector:@selector(reloadData) withObject:nil afterDelay:0.4];
     } else {
         [self.tableView reloadData];

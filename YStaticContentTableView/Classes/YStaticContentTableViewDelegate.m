@@ -18,7 +18,7 @@
 @implementation YStaticContentTableViewDelegate
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    YStaticContentTableViewSection *sectionContent = tableView.staticContentSections[indexPath.section];
+    YStaticContentTableViewSection *sectionContent = tableView.y_staticContentSections[indexPath.section];
     YStaticContentTableViewCellExtraInfo *cellContent = [sectionContent cellInfoForRow:indexPath.row];
     
     if (cellContent.cellHeight == -1) {
@@ -60,7 +60,7 @@
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
-    YStaticContentTableViewSection *sectionContent = tableView.staticContentSections[section];
+    YStaticContentTableViewSection *sectionContent = tableView.y_staticContentSections[section];
     UIView *headerView = sectionContent.headerView;
     if (headerView) {
         return CGRectGetHeight(headerView.frame);
@@ -70,7 +70,7 @@
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
-    YStaticContentTableViewSection *sectionContent = tableView.staticContentSections[section];
+    YStaticContentTableViewSection *sectionContent = tableView.y_staticContentSections[section];
     UIView *footerView = sectionContent.footerView;
     if (footerView) {
         return CGRectGetHeight(footerView.frame);
@@ -81,28 +81,28 @@
 
 
 - (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath {
-    YStaticContentTableViewSection *sectionContent = tableView.staticContentSections[indexPath.section];
+    YStaticContentTableViewSection *sectionContent = tableView.y_staticContentSections[indexPath.section];
     YStaticContentTableViewCellExtraInfo *cellContent = [sectionContent cellInfoForRow:indexPath.row];
     
     return cellContent.editingStyle;
 }
 
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
-    YStaticContentTableViewSection *sectionContent = tableView.staticContentSections[indexPath.section];
+    YStaticContentTableViewSection *sectionContent = tableView.y_staticContentSections[indexPath.section];
     YStaticContentTableViewCellExtraInfo *cellContent = [sectionContent cellInfoForRow:indexPath.row];
     
     return cellContent.editable;
 }
 
 - (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath {
-    YStaticContentTableViewSection *sectionContent = tableView.staticContentSections[indexPath.section];
+    YStaticContentTableViewSection *sectionContent = tableView.y_staticContentSections[indexPath.section];
     YStaticContentTableViewCellExtraInfo *cellContent = [sectionContent cellInfoForRow:indexPath.row];
     
     return cellContent.moveable;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    YStaticContentTableViewSection *sectionContent = tableView.staticContentSections[indexPath.section];
+    YStaticContentTableViewSection *sectionContent = tableView.y_staticContentSections[indexPath.section];
     YStaticContentTableViewCellExtraInfo *cellContent = [sectionContent cellInfoForRow:indexPath.row];
     
     if(cellContent.whenSelectedBlock) {
@@ -113,14 +113,13 @@
     [scrollView endEditing:YES];
 }
 
-
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
-    YStaticContentTableViewSection *sectionContent = tableView.staticContentSections[section];
+    YStaticContentTableViewSection *sectionContent = tableView.y_staticContentSections[section];
     return sectionContent.headerView;
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section {
-    YStaticContentTableViewSection *sectionContent = tableView.staticContentSections[section];
+    YStaticContentTableViewSection *sectionContent = tableView.y_staticContentSections[section];
     return sectionContent.footerView;
 }
 

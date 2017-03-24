@@ -11,7 +11,7 @@
 
 @implementation UITableView (YStaticContentTableViewPrivate)
 
-- (NSMutableArray<YStaticContentTableViewSection *> *)staticContentSections {
+- (NSMutableArray<YStaticContentTableViewSection *> *)y_staticContentSections {
     static void *staticContentSectionsKey;
     NSMutableArray *_staticContentSections = objc_getAssociatedObject(self, &staticContentSectionsKey);
     if (!_staticContentSections) {

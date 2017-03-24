@@ -11,6 +11,6 @@
 
 @interface UITableView (YStaticContentTableViewPrivate)
 
-- (NSMutableArray<YStaticContentTableViewSection *> *)staticContentSections;
+- (NSMutableArray<YStaticContentTableViewSection *> *)y_staticContentSections;
 
 @end

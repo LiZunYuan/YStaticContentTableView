@@ -34,7 +34,7 @@ pod "YStaticContentTableView"
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    [self.tableView enableStaticTableView];
+    [self.tableView y_enableStaticTableView];
     
     __weak typeof(self) weakSelf = self;
     [self.tableView addSection:^(YStaticContentTableViewSection *section, NSUInteger sectionIndex) {

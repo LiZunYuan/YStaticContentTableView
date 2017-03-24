@@ -7,7 +7,6 @@
 //
 
 #import <Foundation/Foundation.h>
-//#import <CoreGraphics/CoreGr>
 
 @class YStaticContentTableViewSection, YStaticContentTableViewCellExtraInfo;
 

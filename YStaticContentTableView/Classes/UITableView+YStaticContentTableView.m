@@ -15,15 +15,15 @@
 
 @implementation UITableView (YStaticContentTableView) 
 
-- (void)enableStaticTableView
+- (void)y_enableStaticTableView
 {
-    self.dataSource = self.staticTableViewDataSource;
-    self.delegate = self.staticTableViewDelegate;
+    self.dataSource = self.y_staticTableViewDataSource;
+    self.delegate = self.y_staticTableViewDelegate;
 }
 
-- (void)enableMixStaticTableView:(id<UITableViewDelegate>)delegate dataSource:(id<UITableViewDataSource>)dataSource
+- (void)y_enableMixStaticTableView:(id <UITableViewDelegate>)delegate dataSource:(id<UITableViewDataSource>)dataSource
 {
-    [self enableStaticTableView];
+    [self y_enableStaticTableView];
     
     if (dataSource) {
         self.dataSource = dataSource;
@@ -37,47 +37,47 @@
 
 #pragma mark - Static Content
 
-- (void)_updateSectionIndexes {
+- (void)y_updateSectionIndexes {
     NSInteger updatedIndex = 0;
-    for(YStaticContentTableViewSection *section in self.staticContentSections) {
+    for(YStaticContentTableViewSection *section in self.y_staticContentSections) {
         section.sectionIndex = updatedIndex;
         updatedIndex++;
     }
 }
 
-- (void)removeAllSections {
-    if(self.staticContentSections) {
-        [self.staticContentSections removeAllObjects];
+- (void)y_removeAllSections {
+    if(self.y_staticContentSections) {
+        [self.y_staticContentSections removeAllObjects];
     }
 }
 
-- (YStaticContentTableViewSection *)addSection:(YStaticContentTableViewControllerAddSectionBlock)b {
+- (YStaticContentTableViewSection *)y_addSection:(YStaticContentTableViewControllerAddSectionBlock)b {
     
     YStaticContentTableViewSection *section = [[YStaticContentTableViewSection alloc] init];
     section.tableView = self;
-    section.sectionIndex = [self.staticContentSections count];
+    section.sectionIndex = [self.y_staticContentSections count];
     
     b(section, section.sectionIndex);
     
-    [self.staticContentSections addObject:section];
-    
-    [self _updateSectionIndexes];
+    [self.y_staticContentSections addObject:section];
+
+    [self y_updateSectionIndexes];
     return section;
 }
 
-- (YStaticContentTableViewSection *)insertSection:(YStaticContentTableViewControllerAddSectionBlock)b atIndex:(NSUInteger)sectionIndex {
-    return [self insertSection:b atIndex:sectionIndex animated:YES];
+- (YStaticContentTableViewSection *)y_insertSection:(YStaticContentTableViewControllerAddSectionBlock)b atIndex:(NSUInteger)sectionIndex {
+    return [self y_insertSection:b atIndex:sectionIndex animated:YES];
 }
-- (YStaticContentTableViewSection *)insertSection:(YStaticContentTableViewControllerAddSectionBlock)b atIndex:(NSUInteger)sectionIndex animated:(BOOL)animated {
-    return [self insertSection:b atIndex:sectionIndex animated:YES updateView:YES];
+- (YStaticContentTableViewSection *)y_insertSection:(YStaticContentTableViewControllerAddSectionBlock)b atIndex:(NSUInteger)sectionIndex animated:(BOOL)animated {
+    return [self y_insertSection:b atIndex:sectionIndex animated:YES updateView:YES];
 }
 
-- (YStaticContentTableViewSection *)insertSection:(YStaticContentTableViewControllerAddSectionBlock)b atIndex:(NSUInteger)sectionIndex animated:(BOOL)animated updateView:(BOOL)updateView {
+- (YStaticContentTableViewSection *)y_insertSection:(YStaticContentTableViewControllerAddSectionBlock)b atIndex:(NSUInteger)sectionIndex animated:(BOOL)animated updateView:(BOOL)updateView {
     YStaticContentTableViewSection *section = [[YStaticContentTableViewSection alloc] init];
     b(section, sectionIndex);
-    [self.staticContentSections insertObject:section atIndex:sectionIndex];
-    
-    [self _updateSectionIndexes];
+    [self.y_staticContentSections insertObject:section atIndex:sectionIndex];
+
+    [self y_updateSectionIndexes];
     
     if (updateView) {
         if(animated) {
@@ -89,13 +89,13 @@
     return section;
 }
 
-- (void)removeSectionAtIndex:(NSUInteger)sectionIndex {
-    [self removeSectionAtIndex:sectionIndex animated:YES];
+- (void)y_removeSectionAtIndex:(NSUInteger)sectionIndex {
+    [self y_removeSectionAtIndex:sectionIndex animated:YES];
 }
-- (void)removeSectionAtIndex:(NSUInteger)sectionIndex animated:(BOOL)animated {
-    [self.staticContentSections removeObjectAtIndex:sectionIndex];
-    
-    [self _updateSectionIndexes];
+- (void)y_removeSectionAtIndex:(NSUInteger)sectionIndex animated:(BOOL)animated {
+    [self.y_staticContentSections removeObjectAtIndex:sectionIndex];
+
+    [self y_updateSectionIndexes];
     
     if(animated) {
         [self beginUpdates];
@@ -108,33 +108,33 @@
     }
 }
 
-- (void)reloadSectionAtIndex:(NSUInteger)sectionIndex {
-    [self reloadSectionAtIndex:sectionIndex animated:YES];
+- (void)y_reloadSectionAtIndex:(NSUInteger)sectionIndex {
+    [self y_reloadSectionAtIndex:sectionIndex animated:YES];
 }
-- (void)reloadSectionAtIndex:(NSUInteger)sectionIndex animated:(BOOL)animated {
+- (void)y_reloadSectionAtIndex:(NSUInteger)sectionIndex animated:(BOOL)animated {
     [self reloadSections:[NSIndexSet indexSetWithIndex:sectionIndex] withRowAnimation:animated ? UITableViewRowAnimationAutomatic : UITableViewRowAnimationNone];
 }
 
-- (YStaticContentTableViewSection *)sectionAtIndex:(NSUInteger)sectionIndex {
-    return self.staticContentSections[sectionIndex];
+- (YStaticContentTableViewSection *)y_sectionAtIndex:(NSUInteger)sectionIndex {
+    return self.y_staticContentSections[sectionIndex];
 }
 
-- (YStaticContentTableViewCellExtraInfo *)insertCell:(YStaticContentTableViewCellBlock)configurationBlock
-        atIndexPath:(NSIndexPath *)indexPath
-           animated:(BOOL)animated {
+- (YStaticContentTableViewCellExtraInfo *)y_insertCell:(YStaticContentTableViewCellBlock)configurationBlock
+                                           atIndexPath:(NSIndexPath *)indexPath
+                                              animated:(BOOL)animated {
     
-    return [self insertCell:configurationBlock
-        whenSelected:nil
-         atIndexPath:indexPath
-            animated:YES];
+    return [self y_insertCell:configurationBlock
+                 whenSelected:nil
+                  atIndexPath:indexPath
+                     animated:YES];
 }
 
-- (YStaticContentTableViewCellExtraInfo *)insertCell:(YStaticContentTableViewCellBlock)configurationBlock
-       whenSelected:(YStaticContentTableViewCellWhenSelectedBlock)whenSelectedBlock
-        atIndexPath:(NSIndexPath *)indexPath
-           animated:(BOOL)animated {
+- (YStaticContentTableViewCellExtraInfo *)y_insertCell:(YStaticContentTableViewCellBlock)configurationBlock
+                                          whenSelected:(YStaticContentTableViewCellWhenSelectedBlock)whenSelectedBlock
+                                           atIndexPath:(NSIndexPath *)indexPath
+                                              animated:(BOOL)animated {
     
-    YStaticContentTableViewSection *section = [self sectionAtIndex:indexPath.section];
+    YStaticContentTableViewSection *section = [self y_sectionAtIndex:indexPath.section];
     
     return [section insertCell:configurationBlock
            whenSelected:whenSelectedBlock 
@@ -142,124 +142,17 @@
                animated:animated];
 }
 
-
-#pragma mark - Headers & Footers
-static void *headerTextKey;
-- (void)setHeaderText:(NSString *)headerTextValue {
-    objc_setAssociatedObject(self, &headerTextKey, headerTextValue, OBJC_ASSOCIATION_COPY);
-    
-    if(!headerTextValue) {
-        self.tableFooterView = nil;
-        return;
-    }
-    
-    UIView *headerLabelContainerView = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, 320.0, 0.0)];
-    UILabel *headerLabel = [[UILabel alloc] initWithFrame:CGRectMake(10.0, 10.0, 280.0, 0.0)];
-    
-    headerLabel.backgroundColor = [UIColor clearColor];
-    headerLabel.font = [UIFont systemFontOfSize:15.0];
-    headerLabel.textColor = [UIColor colorWithRed:61.0/255.0 green:77.0/255.0 blue:99.0/255.0 alpha:1.0];
-    headerLabel.shadowColor = [UIColor colorWithWhite:1.0 alpha:0.65];
-    headerLabel.shadowOffset = CGSizeMake(0.0, 1.0);
-    headerLabel.textAlignment = NSTextAlignmentCenter;
-    headerLabel.numberOfLines = 0;
-    
-    headerLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-    
-    headerLabel.text = self.headerText;
-    
-    [headerLabel sizeToFit];
-    
-    CGRect headerLabelContainerViewRect = headerLabelContainerView.frame;
-    headerLabelContainerViewRect.size.height = headerLabel.frame.size.height + 10.0;
-    headerLabel.frame = headerLabelContainerViewRect;
-    
-    [headerLabelContainerView addSubview:headerLabel];
-    
-    CGRect headerLabelFrame = headerLabel.frame;
-    headerLabelFrame.size.width = 280.0;
-    headerLabelFrame.origin.x = 20.0;
-    headerLabelFrame.origin.y = 10.0;
-    headerLabelFrame.size.height += 10.0;
-    headerLabel.frame = headerLabelFrame;
-    
-    CGRect containerFrame = headerLabelContainerView.frame;
-    containerFrame.size.height = headerLabel.frame.size.height + 10.0;
-    headerLabelContainerView.frame = containerFrame;
-    
-    self.tableHeaderView = headerLabelContainerView;
-    
-}
-
-- (NSString *)headerText
-{
-    return objc_getAssociatedObject(self, &headerTextKey);
-}
-
-
-static void *footerTextKey;
-- (void)setFooterText:(NSString *)footerTextValue {
-    objc_setAssociatedObject(self, &footerTextKey, footerTextValue, OBJC_ASSOCIATION_COPY);
-    
-    if(!footerTextValue) {
-        self.tableFooterView = nil;
-        return;
-    }
-    
-    UIView *footerLabelContainerView = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, 320.0, 0.0)];
-    UILabel *footerLabel = [[UILabel alloc] initWithFrame:CGRectMake(10.0, 10.0, 280.0, 0.0)];
-    
-    footerLabel.backgroundColor = [UIColor clearColor];
-    footerLabel.font = [UIFont systemFontOfSize:15.0];
-    footerLabel.textColor = [UIColor colorWithRed:61.0/255.0 green:77.0/255.0 blue:99.0/255.0 alpha:1.0];
-    footerLabel.shadowColor = [UIColor colorWithWhite:1.0 alpha:0.65];
-    footerLabel.shadowOffset = CGSizeMake(0.0, 1.0);
-    footerLabel.textAlignment = NSTextAlignmentCenter;
-    footerLabel.numberOfLines = 0;
-    
-    footerLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-    
-    footerLabel.text = self.footerText;
-    
-    [footerLabel sizeToFit];
-    
-    CGRect footerLabelContainerViewRect = footerLabelContainerView.frame;
-    footerLabelContainerViewRect.size.height = footerLabel.frame.size.height + 10.0;
-    footerLabel.frame = footerLabelContainerViewRect;
-    
-    [footerLabelContainerView addSubview:footerLabel];
-    
-    CGRect footerLabelFrame = footerLabel.frame;
-    footerLabelFrame.size.width = 260.0;
-    footerLabelFrame.origin.x = 30.0;
-    footerLabelFrame.origin.y = 0.0;	
-    footerLabel.frame = footerLabelFrame;
-    
-    CGRect containerFrame = footerLabelContainerView.frame;
-    containerFrame.size.height = footerLabel.frame.size.height + 10.0;
-    footerLabelContainerView.frame = containerFrame;
-    
-    self.tableFooterView = footerLabelContainerView;
-    
-}
-
-- (NSString *)footerText
-{
-    return objc_getAssociatedObject(self, &footerTextKey);
-}
-
 #pragma mark - set get
-
-static void *oriTableViewDelegateKey;
-- (void)setOriTableViewDelegate:(id<UITableViewDelegate,UITableViewDataSource>)delegate{
-    objc_setAssociatedObject(self, &oriTableViewDelegateKey, delegate, OBJC_ASSOCIATION_RETAIN);
+static void *y_oriTableViewDelegateKey;
+- (void)setOriTableViewDelegate:(id<UITableViewDelegate,UITableViewDataSource>)y_oriTableViewDelegate {
+    objc_setAssociatedObject(self, &y_oriTableViewDelegateKey, y_oriTableViewDelegate, OBJC_ASSOCIATION_RETAIN);
 }
 
-- (id<UITableViewDelegate,UITableViewDataSource>)oriTableViewDelegate {
-    return objc_getAssociatedObject(self, &oriTableViewDelegateKey);
+- (id<UITableViewDelegate,UITableViewDataSource>)y_oriTableViewDelegate {
+    return objc_getAssociatedObject(self, &y_oriTableViewDelegateKey);
 }
 
-- (id<UITableViewDataSource>)staticTableViewDataSource
+- (id<UITableViewDataSource>)y_staticTableViewDataSource
 {
     static void *staticTableViewDataSource;
     id<UITableViewDataSource> _dataSource = objc_getAssociatedObject(self, &staticTableViewDataSource);
@@ -270,7 +163,7 @@ static void *oriTableViewDelegateKey;
     return _dataSource;
 }
 
-- (id<UITableViewDelegate>)staticTableViewDelegate
+- (id<UITableViewDelegate>)y_staticTableViewDelegate
 {
     static void *staticTableViewDelegate;
     id<UITableViewDelegate> _delegate = objc_getAssociatedObject(self, &staticTableViewDelegate);
@@ -280,6 +173,5 @@ static void *oriTableViewDelegateKey;
     }
     return _delegate;
 }
-
 
 @end
