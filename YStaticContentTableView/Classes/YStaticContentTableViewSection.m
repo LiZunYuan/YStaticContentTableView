@@ -8,10 +8,16 @@
 
 #import "YStaticContentTableViewSection.h"
 
+#import <objc/runtime.h>
+
 @interface YStaticContentTableViewSection()
 
 @property (nonatomic, strong) NSMutableSet<NSString *> *reuseIdentifiers;
 @property (nonatomic, strong) NSMutableArray<YStaticContentTableViewCellExtraInfo *> *staticContentCells;
+
+@property (nonatomic, strong) NSMutableArray<TTT> *ts;
+
+@property (nonatomic, assign) BOOL statrt;
 
 @end
 
@@ -35,29 +41,134 @@
 - (YStaticContentTableViewCellExtraInfo *)insertCell:(YStaticContentTableViewCellBlock)configurationBlock
        whenSelected:(YStaticContentTableViewCellWhenSelectedBlock)whenSelectedBlock
         atIndexPath:(NSIndexPath *)indexPath animated:(BOOL)animated updateView:(BOOL)updateView {
-    YStaticContentTableViewCellExtraInfo *staticContentCell = [[YStaticContentTableViewCellExtraInfo alloc] init];
-    staticContentCell.configureBlock = configurationBlock;
-    staticContentCell.whenSelectedBlock = whenSelectedBlock;
-    configurationBlock(staticContentCell, nil, indexPath);
-    [self.staticContentCells insertObject:staticContentCell atIndex:indexPath.row];
     
-    if (![self.reuseIdentifiers containsObject:staticContentCell.reuseIdentifier]) {
-        if (staticContentCell.tableViewCellNib) {
-            [self.tableView registerNib:staticContentCell.tableViewCellNib forCellReuseIdentifier:staticContentCell.reuseIdentifier];
-        } else {
-            [self.tableView registerClass:staticContentCell.tableViewCellSubclass forCellReuseIdentifier:staticContentCell.reuseIdentifier];
-        }
-        [self.reuseIdentifiers addObject:staticContentCell.reuseIdentifier];
+    
+    NSUInteger row = indexPath.row;
+    NSUInteger section = indexPath.section;
+    [self.ts addObject:^(){
+    
+    
+    
+//    dispatch_async(dispatch_get_global_queue(0, 0), ^{
+    
+//        dispatch_async(dispatch_get_main_queue(), ^{
+        
+        
+        
+        NSIndexPath *cindexPath = [NSIndexPath indexPathForRow:row inSection:section];
+        YStaticContentTableViewCellExtraInfo *staticContentCell = [[YStaticContentTableViewCellExtraInfo alloc] init];
+        staticContentCell.configureBlock = configurationBlock;
+        staticContentCell.whenSelectedBlock = whenSelectedBlock;
+        configurationBlock(staticContentCell, nil, cindexPath);
+        [self.staticContentCells insertObject:staticContentCell atIndex:cindexPath.row];
+            if (![self.reuseIdentifiers containsObject:staticContentCell.reuseIdentifier]) {
+                if (staticContentCell.tableViewCellNib) {
+                    [self.tableView registerNib:staticContentCell.tableViewCellNib forCellReuseIdentifier:staticContentCell.reuseIdentifier];
+                } else {
+                    [self.tableView registerClass:staticContentCell.tableViewCellSubclass forCellReuseIdentifier:staticContentCell.reuseIdentifier];
+                }
+                [self.reuseIdentifiers addObject:staticContentCell.reuseIdentifier];
+            }
+            
+            if (YES) {
+                if(animated) {
+                    [self.tableView insertRowsAtIndexPaths:@[cindexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+                } else {
+                    [self.tableView reloadData];
+                }
+            }
+            
+//        });
+        
+//    });
+        
+    
+    }];
+    
+    
+//    static dispatch_once_t onceToken;
+//    dispatch_once(&onceToken, ^{
+        [self fd_precacheIfNeeded:^{
+        }];
+        
+//    });
+    return nil;
+    
+    
+}
+
+
+- (instancetype)init
+{
+    self = [super init];
+    if (self) {
+        self.statrt = NO;
+    }
+    return self;
+}
+
+- (void)fd_precacheIfNeeded:(void (^)())block
+{
+    
+    
+    if (self.statrt) {
+        return;
     }
     
-    if (updateView) {
-        if(animated) {
-            [self.tableView insertRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
-        } else {
-            [self.tableView reloadData];
+    self.statrt = YES;
+//    if (!self.fd_precacheEnabled) {
+//        return;
+//    }
+//    
+//    // Delegate could use "rowHeight" rather than implements this method.
+//    if (![self.delegate respondsToSelector:@selector(tableView:heightForRowAtIndexPath:)]) {
+//        return;
+//    }
+    
+    CFRunLoopRef runLoop = CFRunLoopGetCurrent();
+    
+    // This is a idle mode of RunLoop, when UIScrollView scrolls, it jumps into "UITrackingRunLoopMode"
+    // and won't perform any cache task to keep a smooth scroll.
+    CFStringRef runLoopMode = NSRunLoopCommonModes;
+    
+    // Collect all index paths to be precached.
+//    NSMutableArray *mutableIndexPathsToBePrecached = self.fd_allIndexPathsToBePrecached.mutableCopy;
+    
+    // Setup a observer to get a perfect moment for precaching tasks.
+    // We use a "kCFRunLoopBeforeWaiting" state to keep RunLoop has done everything and about to sleep
+    // (mach_msg_trap), when all tasks finish, it will remove itself.
+    CFRunLoopObserverRef observer = CFRunLoopObserverCreateWithHandler
+    (kCFAllocatorDefault, kCFRunLoopBeforeWaiting, true, 0, ^(CFRunLoopObserverRef observer, CFRunLoopActivity _) {
+        // Remove observer when all precache tasks are done.
+        if (self.ts.count == 0) {
+            CFRunLoopRemoveObserver(runLoop, observer, runLoopMode);
+            CFRelease(observer);
+            return;
         }
-    }
-    return staticContentCell;
+        // Pop first index path record as this RunLoop iteration's task.
+//        NSIndexPath *indexPath = mutableIndexPathsToBePrecached.firstObject;
+//        [mutableIndexPathsToBePrecached removeObject:indexPath];
+        
+        [self.ts removeObject:0];
+        
+        
+        
+        // This method creates a "source 0" task in "idle" mode of RunLoop, and will be
+        // performed in a future RunLoop iteration only when user is not scrolling.
+        [self performSelector:@selector(fd_precacheIndexPathIfNeeded:)
+                     onThread:[NSThread mainThread]
+                   withObject:self.ts[0]
+                waitUntilDone:NO
+                        modes:@[NSRunLoopCommonModes]];
+    });
+    
+    CFRunLoopAddObserver(runLoop, observer, runLoopMode);
+}
+
+- (void)fd_precacheIndexPathIfNeeded:(TTT)t
+{
+    t();
+    [self.tableView.delegate tableView:self.tableView heightForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0 ]];
 }
 
 - (YStaticContentTableViewCellExtraInfo *)addCell:(YStaticContentTableViewCellBlock)configurationBlock
@@ -108,6 +219,27 @@
     
     return [NSString stringWithString:str];
 }
+
+- (NSMutableArray<TTT> *)ts
+{
+    if (_ts == nil) {
+        _ts = [NSMutableArray array];
+    }
+    return _ts;
+}
+
+
+static char emailAddressKey;
+- (BOOL)statrt
+{
+    return [objc_getAssociatedObject(self, &emailAddressKey) boolValue];
+}
+
+- (void)setStatrt:(BOOL)s {
+    objc_setAssociatedObject(self, &emailAddressKey, @(s), OBJC_ASSOCIATION_RETAIN);
+} 
+
+
 
 - (NSInteger)numberOfRowInSection {
     return [self staticContentCells].count;

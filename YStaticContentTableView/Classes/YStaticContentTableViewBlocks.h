@@ -15,3 +15,4 @@ typedef void(^YStaticContentTableViewCellWhenSelectedBlock)(NSIndexPath *indexPa
 
 typedef void(^YStaticContentTableViewControllerAddSectionBlock)(YStaticContentTableViewSection *section, NSUInteger sectionIndex);
 
+typedef void(^TTT)();

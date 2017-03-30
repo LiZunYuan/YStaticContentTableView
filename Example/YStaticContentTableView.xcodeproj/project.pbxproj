@@ -270,6 +270,9 @@
 				LastUpgradeCheck = 0720;
 				ORGANIZATIONNAME = LiZunYuan;
 				TargetAttributes = {
+					6003F589195388D20070C39A = {
+						DevelopmentTeam = 7525RGL8V9;
+					};
 					6003F5AD195388D20070C39A = {
 						LastSwiftMigration = 0820;
 						TestTargetID = 6003F589195388D20070C39A;
@@ -549,6 +552,7 @@
 			baseConfigurationReference = 1E33CFD96343DBCA62304E85 /* Pods-YStaticContentTableView_Example.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = 7525RGL8V9;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "YStaticContentTableView/YStaticContentTableView-Prefix.pch";
 				INFOPLIST_FILE = "YStaticContentTableView/YStaticContentTableView-Info.plist";
@@ -564,6 +568,7 @@
 			baseConfigurationReference = BACBD33F11CA4B96226114AC /* Pods-YStaticContentTableView_Example.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = 7525RGL8V9;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "YStaticContentTableView/YStaticContentTableView-Prefix.pch";
 				INFOPLIST_FILE = "YStaticContentTableView/YStaticContentTableView-Info.plist";

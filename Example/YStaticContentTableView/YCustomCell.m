@@ -27,6 +27,11 @@
 
 - (CGSize)sizeThatFits:(CGSize)size
 {
+    
+//    sleep(1);
+    
+    
+    
     return CGSizeMake(size.width, 44.5);
 }
 

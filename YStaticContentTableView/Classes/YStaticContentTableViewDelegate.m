@@ -24,25 +24,32 @@
     if (cellContent.cellHeight == -1) {
         if (tableView.rowHeight == -1) {
             //判断是否有缓存，如果有则读取
-            if (cellContent.heightCacheType == YStaticContentHeightCacheTypeIndexPath) {
-                if ([tableView.fd_indexPathHeightCache existsHeightAtIndexPath:indexPath]) {
-                    return [tableView.fd_indexPathHeightCache heightForIndexPath:indexPath];
-                }
-            } else {
-                NSString *key;
-                if (cellContent.heightCacheType == YStaticContentHeightCacheTypeReuseIdentifier) {
-                    key = cellContent.reuseIdentifier;
-                } else {
-                    key = cellContent.customIdentifier;
-                }
-                
-                if ([tableView.fd_keyedHeightCache existsHeightForKey:key]) {
-                    return [tableView.fd_keyedHeightCache heightForKey:key];
-                }
-            }
+            CGFloat cellHeight = -1;
+//            if (cellContent.heightCacheType == YStaticContentHeightCacheTypeIndexPath) {
+////                if ([tableView.fd_indexPathHeightCache existsHeightAtIndexPath:indexPath]) {
+//                   cellHeight = [tableView.fd_indexPathHeightCache heightForIndexPath:indexPath];
+//                if (cellHeight != -1) {
+//                    return cellHeight;
+//                }
+////                }
+//            } else {
+//                NSString *key;
+//                if (cellContent.heightCacheType == YStaticContentHeightCacheTypeReuseIdentifier) {
+//                    key = cellContent.reuseIdentifier;
+//                } else {
+//                    key = cellContent.customIdentifier;
+//                }
+//                
+////                if ([tableView.fd_keyedHeightCache existsHeightForKey:key]) {
+//                    cellHeight = [tableView.fd_keyedHeightCache heightForKey:key];
+//                if (cellHeight != -1) {
+//                    return cellHeight;
+//                }
+////                }
+//            }
             //找不到缓存,开始计算高度
-            CGFloat cellHeight = [tableView fd_heightForCellWithIdentifier:cellContent.reuseIdentifier configuration:^(UITableViewCell *cell) {
-                cellContent.configureBlock(nil, cell, indexPath);
+            cellHeight = [tableView fd_heightForCellWithIdentifier:cellContent.reuseIdentifier configuration:^(UITableViewCell *cell) {
+//                cellContent.configureBlock(nil, cell, indexPath);
                 //如果一个约束都没事 就变成frameLayout
                 if (cell.contentView.constraints.count == 0 && cell.constraints.count == 0) {
                     cell.fd_enforceFrameLayout = YES;
@@ -55,18 +62,20 @@
                 }
             }];
             
-            //存入缓存
-            if (cellContent.heightCacheType == YStaticContentHeightCacheTypeIndexPath) {
-                [tableView.fd_indexPathHeightCache cacheHeight:cellHeight byIndexPath:indexPath];
-            } else {
-                NSString *key;
-                if (cellContent.heightCacheType == YStaticContentHeightCacheTypeReuseIdentifier) {
-                    key = cellContent.reuseIdentifier;
-                } else {
-                    key = cellContent.customIdentifier;
-                }
-                [tableView.fd_keyedHeightCache cacheHeight:cellHeight byKey:key];
-            }
+            cellContent.cellHeight = cellHeight;
+            
+//            //存入缓存
+//            if (cellContent.heightCacheType == YStaticContentHeightCacheTypeIndexPath) {
+//                [tableView.fd_indexPathHeightCache cacheHeight:cellHeight byIndexPath:indexPath];
+//            } else {
+//                NSString *key;
+//                if (cellContent.heightCacheType == YStaticContentHeightCacheTypeReuseIdentifier) {
+//                    key = cellContent.reuseIdentifier;
+//                } else {
+//                    key = cellContent.customIdentifier;
+//                }
+//                [tableView.fd_keyedHeightCache cacheHeight:cellHeight byKey:key];
+//            }
             return cellHeight;
         }
         return tableView.rowHeight;

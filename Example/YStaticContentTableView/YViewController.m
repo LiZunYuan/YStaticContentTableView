@@ -31,7 +31,7 @@
     NSMutableArray *arr = [NSMutableArray arrayWithCapacity:99999];
     
     NSDate *preDate = [NSDate date];
-    for (int i = 0 ; i < 99999; i++) {
+    for (int i = 0 ; i < 9999; i++) {
         YStaticContentTableViewCellExtraInfo *staticContentCell = [[YStaticContentTableViewCellExtraInfo alloc] init];
         [staticContentCell setWhenSelectedBlock:^(NSIndexPath *indexPath) {
             int a = 2;
