@@ -18,6 +18,9 @@
 @property (nonatomic, strong) NSMutableArray<TTT> *ts;
 
 @property (nonatomic, assign) BOOL statrt;
+@property (nonatomic, assign) BOOL statrt2;
+
+@property (nonatomic, assign) CGFloat totalHeight;
 
 @end
 
@@ -103,6 +106,8 @@
     self = [super init];
     if (self) {
         self.statrt = NO;
+        self.statrt2 = NO;
+        self.totalHeight = 0;
     }
     return self;
 }
@@ -110,12 +115,16 @@
 - (void)fd_precacheIfNeeded:(void (^)())block
 {
     
+    [self fd_precacheIfNeededDefault:block];
     
     if (self.statrt) {
+        
+        
         return;
     }
-    
     self.statrt = YES;
+    
+    
 //    if (!self.fd_precacheEnabled) {
 //        return;
 //    }
@@ -140,35 +149,104 @@
     CFRunLoopObserverRef observer = CFRunLoopObserverCreateWithHandler
     (kCFAllocatorDefault, kCFRunLoopBeforeWaiting, true, 0, ^(CFRunLoopObserverRef observer, CFRunLoopActivity _) {
         // Remove observer when all precache tasks are done.
-        if (self.ts.count == 0) {
-            CFRunLoopRemoveObserver(runLoop, observer, runLoopMode);
-            CFRelease(observer);
-            return;
-        }
+//        if (self.ts.count == 0) {
+//            CFRunLoopRemoveObserver(runLoop, observer, runLoopMode);
+//            CFRelease(observer);
+//            return;
+//        }
         // Pop first index path record as this RunLoop iteration's task.
 //        NSIndexPath *indexPath = mutableIndexPathsToBePrecached.firstObject;
 //        [mutableIndexPathsToBePrecached removeObject:indexPath];
         
-        [self.ts removeObject:0];
+        
+        if (self.ts > 0 && self.tableView.contentOffset.y + self.tableView.frame.size.height*2 > self.tableView.contentSize.height ) {
+            [self.ts removeObject:0];
+            
+            // This method creates a "source 0" task in "idle" mode of RunLoop, and will be
+            // performed in a future RunLoop iteration only when user is not scrolling.
+            [self performSelector:@selector(fd_precacheIndexPathIfNeeded:)
+                         onThread:[NSThread mainThread]
+                       withObject:self.ts[0]
+                    waitUntilDone:NO
+                            modes:@[NSRunLoopCommonModes]];
+        }
+    });
+    
+    CFRunLoopAddObserver(runLoop, observer, runLoopMode);
+    
+    
+    
+    
+}
+
+
+
+- (void)fd_precacheIfNeededDefault:(void (^)())block
+{
+    
+    
+    if (self.statrt2 ) {
+        return;
+    }
+    
+    self.statrt2 = YES;
+    //    if (!self.fd_precacheEnabled) {
+    //        return;
+    //    }
+    //
+    //    // Delegate could use "rowHeight" rather than implements this method.
+    //    if (![self.delegate respondsToSelector:@selector(tableView:heightForRowAtIndexPath:)]) {
+    //        return;
+    //    }
+    
+    CFRunLoopRef runLoop = CFRunLoopGetCurrent();
+    
+    // This is a idle mode of RunLoop, when UIScrollView scrolls, it jumps into "UITrackingRunLoopMode"
+    // and won't perform any cache task to keep a smooth scroll.
+    CFStringRef runLoopMode = NSDefaultRunLoopMode;
+    
+    // Collect all index paths to be precached.
+    //    NSMutableArray *mutableIndexPathsToBePrecached = self.fd_allIndexPathsToBePrecached.mutableCopy;
+    
+    // Setup a observer to get a perfect moment for precaching tasks.
+    // We use a "kCFRunLoopBeforeWaiting" state to keep RunLoop has done everything and about to sleep
+    // (mach_msg_trap), when all tasks finish, it will remove itself.
+    CFRunLoopObserverRef observer = CFRunLoopObserverCreateWithHandler
+    (kCFAllocatorDefault, kCFRunLoopBeforeWaiting, true, 0, ^(CFRunLoopObserverRef observer, CFRunLoopActivity _) {
+        // Remove observer when all precache tasks are done.
+//        if (self.ts.count == 0) {
+//            CFRunLoopRemoveObserver(runLoop, observer, runLoopMode);
+//            CFRelease(observer);
+//            return;
+//        }
+        // Pop first index path record as this RunLoop iteration's task.
+        //        NSIndexPath *indexPath = mutableIndexPathsToBePrecached.firstObject;
+        //        [mutableIndexPathsToBePrecached removeObject:indexPath];
+        
+        
+        if (self.statrt == NO && self.ts.count > 0) {
+            [self.ts removeObject:0];
+            // This method creates a "source 0" task in "idle" mode of RunLoop, and will be
+            // performed in a future RunLoop iteration only when user is not scrolling.
+            [self performSelector:@selector(fd_precacheIndexPathIfNeeded:)
+                         onThread:[NSThread mainThread]
+                       withObject:self.ts[0]
+                    waitUntilDone:NO
+                            modes:@[NSRunLoopCommonModes]];
+        }
         
         
         
-        // This method creates a "source 0" task in "idle" mode of RunLoop, and will be
-        // performed in a future RunLoop iteration only when user is not scrolling.
-        [self performSelector:@selector(fd_precacheIndexPathIfNeeded:)
-                     onThread:[NSThread mainThread]
-                   withObject:self.ts[0]
-                waitUntilDone:NO
-                        modes:@[NSRunLoopCommonModes]];
     });
     
     CFRunLoopAddObserver(runLoop, observer, runLoopMode);
 }
 
+
 - (void)fd_precacheIndexPathIfNeeded:(TTT)t
 {
     t();
-    [self.tableView.delegate tableView:self.tableView heightForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0 ]];
+    self.totalHeight += [self.tableView.delegate tableView:self.tableView heightForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0 ]];
 }
 
 - (YStaticContentTableViewCellExtraInfo *)addCell:(YStaticContentTableViewCellBlock)configurationBlock
@@ -237,7 +315,20 @@ static char emailAddressKey;
 
 - (void)setStatrt:(BOOL)s {
     objc_setAssociatedObject(self, &emailAddressKey, @(s), OBJC_ASSOCIATION_RETAIN);
-} 
+}
+
+
+
+static char emailAddressKey2;
+- (BOOL)statrt2
+{
+    return [objc_getAssociatedObject(self, &emailAddressKey2) boolValue];
+}
+
+- (void)setStatrt2:(BOOL)s {
+    objc_setAssociatedObject(self, &emailAddressKey2, @(s), OBJC_ASSOCIATION_RETAIN);
+}
+
 
 
 

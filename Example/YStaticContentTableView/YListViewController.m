@@ -23,7 +23,7 @@
     
     __weak typeof(self) weakSelf = self;
     [self.tableView y_addSection:^(YStaticContentTableViewSection *section, NSUInteger sectionIndex) {
-        for (NSInteger i = 1; i <= 999999; i++) {
+        for (NSInteger i = 1; i <= 199999; i++) {
             [section addCell:^(YStaticContentTableViewCellExtraInfo *staticContentCell, UITableViewCell *cell, NSIndexPath *indexPath) {
                 staticContentCell.reuseIdentifier = @"UIControlCell";
                 staticContentCell.tableViewCellSubclass = [YCustomCell class];
