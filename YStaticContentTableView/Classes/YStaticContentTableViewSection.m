@@ -169,6 +169,8 @@
                        withObject:self.ts[0]
                     waitUntilDone:NO
                             modes:@[NSRunLoopCommonModes]];
+        } else {
+            self.statrt = NO;
         }
     });
     
