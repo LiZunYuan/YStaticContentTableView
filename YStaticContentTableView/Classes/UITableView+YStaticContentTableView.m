@@ -19,6 +19,7 @@
 {
     self.dataSource = self.y_staticTableViewDataSource;
     self.delegate = self.y_staticTableViewDelegate;
+    self.rowHeight = -1;
 }
 
 - (void)y_enableMixStaticTableView:(id <UITableViewDelegate>)delegate dataSource:(id<UITableViewDataSource>)dataSource

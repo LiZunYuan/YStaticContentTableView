@@ -23,16 +23,24 @@
     
     if (cellContent.cellHeight == -1) {
         if (tableView.rowHeight == -1) {
-            // Hit cache
+            //判断是否有缓存，如果有则读取
             if (cellContent.heightCacheType == YStaticContentHeightCacheTypeIndexPath) {
                 if ([tableView.fd_indexPathHeightCache existsHeightAtIndexPath:indexPath]) {
                     return [tableView.fd_indexPathHeightCache heightForIndexPath:indexPath];
                 }
             } else {
-                if ([tableView.fd_keyedHeightCache existsHeightForKey:cellContent.reuseIdentifier]) {
-                    return [tableView.fd_keyedHeightCache heightForKey:cellContent.reuseIdentifier];
+                NSString *key;
+                if (cellContent.heightCacheType == YStaticContentHeightCacheTypeReuseIdentifier) {
+                    key = cellContent.reuseIdentifier;
+                } else {
+                    key = cellContent.customIdentifier;
+                }
+                
+                if ([tableView.fd_keyedHeightCache existsHeightForKey:key]) {
+                    return [tableView.fd_keyedHeightCache heightForKey:key];
                 }
             }
+            //找不到缓存,开始计算高度
             CGFloat cellHeight = [tableView fd_heightForCellWithIdentifier:cellContent.reuseIdentifier configuration:^(UITableViewCell *cell) {
                 cellContent.configureBlock(nil, cell, indexPath);
                 //如果一个约束都没事 就变成frameLayout
@@ -47,10 +55,17 @@
                 }
             }];
             
+            //存入缓存
             if (cellContent.heightCacheType == YStaticContentHeightCacheTypeIndexPath) {
                 [tableView.fd_indexPathHeightCache cacheHeight:cellHeight byIndexPath:indexPath];
             } else {
-                [tableView.fd_keyedHeightCache cacheHeight:cellHeight byKey:cellContent.reuseIdentifier];
+                NSString *key;
+                if (cellContent.heightCacheType == YStaticContentHeightCacheTypeReuseIdentifier) {
+                    key = cellContent.reuseIdentifier;
+                } else {
+                    key = cellContent.customIdentifier;
+                }
+                [tableView.fd_keyedHeightCache cacheHeight:cellHeight byKey:key];
             }
             return cellHeight;
         }
