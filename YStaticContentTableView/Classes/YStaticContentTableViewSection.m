@@ -227,6 +227,10 @@
         
         
         if (self.statrt == NO && self.ts.count > 0) {
+            
+            
+            NSLog(@"fd_precacheIfNeededDefault");
+            
             [self.ts removeObject:0];
             // This method creates a "source 0" task in "idle" mode of RunLoop, and will be
             // performed in a future RunLoop iteration only when user is not scrolling.
