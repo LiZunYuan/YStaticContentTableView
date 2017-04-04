@@ -19,7 +19,6 @@
 
 @property (nonatomic, assign) BOOL statrt;
 
-@property (nonatomic, assign) CGFloat totalHeight;
 @property (nonatomic, assign) CFRunLoopObserverRef runLoopObserver;
 
 @end
@@ -80,8 +79,8 @@
 {
     self = [super init];
     if (self) {
-        self.statrt = NO;
-        self.totalHeight = 0;
+        _statrt = NO;
+        _ts = [NSMutableArray array];
     }
     return self;
 }
@@ -127,7 +126,7 @@
 - (void)fd_precacheIndexPathIfNeeded:(TTT)t
 {
     t([NSIndexPath indexPathForRow:self.staticContentCells.count inSection:0]);
-    self.totalHeight += [self.tableView.delegate tableView:self.tableView heightForRowAtIndexPath:[NSIndexPath indexPathForRow:self.staticContentCells.count-1 inSection:0]];
+//    self.totalHeight += [self.tableView.delegate tableView:self.tableView heightForRowAtIndexPath:[NSIndexPath indexPathForRow:self.staticContentCells.count-1 inSection:0]];
 }
 
 - (YStaticContentTableViewCellExtraInfo *)addCell:(YStaticContentTableViewCellBlock)configurationBlock
@@ -177,25 +176,6 @@
     [str appendString:@"\n>"];
     
     return [NSString stringWithString:str];
-}
-
-- (NSMutableArray<TTT> *)ts
-{
-    if (_ts == nil) {
-        _ts = [NSMutableArray array];
-    }
-    return _ts;
-}
-
-
-static char emailAddressKey;
-- (BOOL)statrt
-{
-    return [objc_getAssociatedObject(self, &emailAddressKey) boolValue];
-}
-
-- (void)setStatrt:(BOOL)s {
-    objc_setAssociatedObject(self, &emailAddressKey, @(s), OBJC_ASSOCIATION_RETAIN);
 }
 
 - (NSInteger)numberOfRowInSection {
