@@ -18,9 +18,9 @@
 @property (nonatomic, strong) NSMutableArray<TTT> *ts;
 
 @property (nonatomic, assign) BOOL statrt;
-@property (nonatomic, assign) BOOL statrt2;
 
 @property (nonatomic, assign) CGFloat totalHeight;
+@property (nonatomic, assign) CFRunLoopObserverRef runLoopObserver;
 
 @end
 
@@ -44,60 +44,35 @@
 - (YStaticContentTableViewCellExtraInfo *)insertCell:(YStaticContentTableViewCellBlock)configurationBlock
        whenSelected:(YStaticContentTableViewCellWhenSelectedBlock)whenSelectedBlock
         atIndexPath:(NSIndexPath *)indexPath animated:(BOOL)animated updateView:(BOOL)updateView {
+    __weak typeof(self) weakSelf = self;
     
-    
-    NSUInteger row = indexPath.row;
-    NSUInteger section = indexPath.section;
-    [self.ts addObject:^(){
-    
-    
-    
-//    dispatch_async(dispatch_get_global_queue(0, 0), ^{
-    
-//        dispatch_async(dispatch_get_main_queue(), ^{
+    [self.ts addObject:^(NSIndexPath *indexPath){
         
-        
-        
-        NSIndexPath *cindexPath = [NSIndexPath indexPathForRow:row inSection:section];
+        NSIndexPath *cindexPath = [NSIndexPath indexPathForRow:indexPath.row inSection:indexPath.section];
         YStaticContentTableViewCellExtraInfo *staticContentCell = [[YStaticContentTableViewCellExtraInfo alloc] init];
         staticContentCell.configureBlock = configurationBlock;
         staticContentCell.whenSelectedBlock = whenSelectedBlock;
         configurationBlock(staticContentCell, nil, cindexPath);
-        [self.staticContentCells insertObject:staticContentCell atIndex:cindexPath.row];
-            if (![self.reuseIdentifiers containsObject:staticContentCell.reuseIdentifier]) {
+        [weakSelf.staticContentCells insertObject:staticContentCell atIndex:cindexPath.row];
+            if (![weakSelf.reuseIdentifiers containsObject:staticContentCell.reuseIdentifier]) {
                 if (staticContentCell.tableViewCellNib) {
-                    [self.tableView registerNib:staticContentCell.tableViewCellNib forCellReuseIdentifier:staticContentCell.reuseIdentifier];
+                    [weakSelf.tableView registerNib:staticContentCell.tableViewCellNib forCellReuseIdentifier:staticContentCell.reuseIdentifier];
                 } else {
-                    [self.tableView registerClass:staticContentCell.tableViewCellSubclass forCellReuseIdentifier:staticContentCell.reuseIdentifier];
+                    [weakSelf.tableView registerClass:staticContentCell.tableViewCellSubclass forCellReuseIdentifier:staticContentCell.reuseIdentifier];
                 }
-                [self.reuseIdentifiers addObject:staticContentCell.reuseIdentifier];
+                [weakSelf.reuseIdentifiers addObject:staticContentCell.reuseIdentifier];
             }
-            
-            if (YES) {
-                if(animated) {
-                    [self.tableView insertRowsAtIndexPaths:@[cindexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
-                } else {
-                    [self.tableView reloadData];
-                }
-            }
-            
-//        });
         
-//    });
         
-    
+        [UIView animateWithDuration:0 animations:^{
+            //            [weakSelf.tableView reloadRowsAtIndexPaths:@[cindexPath] withRowAnimation:UITableViewRowAnimationNone];
+            [weakSelf.tableView insertRowsAtIndexPaths:@[cindexPath] withRowAnimation:UITableViewRowAnimationNone];
+        }];
     }];
     
     
-//    static dispatch_once_t onceToken;
-//    dispatch_once(&onceToken, ^{
-        [self fd_precacheIfNeeded:^{
-        }];
-        
-//    });
+    [self fd_precacheIfNeeded];
     return nil;
-    
-    
 }
 
 
@@ -106,153 +81,53 @@
     self = [super init];
     if (self) {
         self.statrt = NO;
-        self.statrt2 = NO;
         self.totalHeight = 0;
     }
     return self;
 }
 
-- (void)fd_precacheIfNeeded:(void (^)())block
+- (void)fd_precacheIfNeeded
 {
-    
-    [self fd_precacheIfNeededDefault:block];
-    
     if (self.statrt) {
-        
-        
         return;
     }
     self.statrt = YES;
     
-    
-//    if (!self.fd_precacheEnabled) {
-//        return;
-//    }
-//    
-//    // Delegate could use "rowHeight" rather than implements this method.
-//    if (![self.delegate respondsToSelector:@selector(tableView:heightForRowAtIndexPath:)]) {
-//        return;
-//    }
-    
     CFRunLoopRef runLoop = CFRunLoopGetCurrent();
+    CFRunLoopMode runLoopMode = kCFRunLoopCommonModes;
     
-    // This is a idle mode of RunLoop, when UIScrollView scrolls, it jumps into "UITrackingRunLoopMode"
-    // and won't perform any cache task to keep a smooth scroll.
-    CFStringRef runLoopMode = NSRunLoopCommonModes;
-    
-    // Collect all index paths to be precached.
-//    NSMutableArray *mutableIndexPathsToBePrecached = self.fd_allIndexPathsToBePrecached.mutableCopy;
-    
-    // Setup a observer to get a perfect moment for precaching tasks.
-    // We use a "kCFRunLoopBeforeWaiting" state to keep RunLoop has done everything and about to sleep
-    // (mach_msg_trap), when all tasks finish, it will remove itself.
-    CFRunLoopObserverRef observer = CFRunLoopObserverCreateWithHandler
+    __weak typeof(self) weakSelf = self;
+    self.runLoopObserver = CFRunLoopObserverCreateWithHandler
     (kCFAllocatorDefault, kCFRunLoopBeforeWaiting, true, 0, ^(CFRunLoopObserverRef observer, CFRunLoopActivity _) {
-        // Remove observer when all precache tasks are done.
-//        if (self.ts.count == 0) {
-//            CFRunLoopRemoveObserver(runLoop, observer, runLoopMode);
-//            CFRelease(observer);
-//            return;
-//        }
-        // Pop first index path record as this RunLoop iteration's task.
-//        NSIndexPath *indexPath = mutableIndexPathsToBePrecached.firstObject;
-//        [mutableIndexPathsToBePrecached removeObject:indexPath];
+        if (weakSelf.ts.count == 0) {
+            weakSelf.statrt = NO;
+            CFRunLoopRemoveObserver(runLoop, observer, runLoopMode);
+            CFRelease(observer);
+            return;
+        }
         
+        if (weakSelf.tableView.contentOffset.y + weakSelf.tableView.contentInset.top < 0) {
+            return;
+        }
         
-        if (self.ts > 0 && self.tableView.contentOffset.y + self.tableView.frame.size.height*2 > self.tableView.contentSize.height ) {
-            [self.ts removeObject:0];
-            
-            // This method creates a "source 0" task in "idle" mode of RunLoop, and will be
-            // performed in a future RunLoop iteration only when user is not scrolling.
-            [self performSelector:@selector(fd_precacheIndexPathIfNeeded:)
-                         onThread:[NSThread mainThread]
-                       withObject:self.ts[0]
-                    waitUntilDone:NO
-                            modes:@[NSRunLoopCommonModes]];
-        } else {
-            self.statrt = NO;
+        if ((CFRunLoopCopyCurrentMode(CFRunLoopGetCurrent()) == kCFRunLoopDefaultMode) || (weakSelf.tableView.contentOffset.y + weakSelf.tableView.frame.size.height - weakSelf.tableView.contentInset.top - weakSelf.tableView.contentInset.bottom > weakSelf.tableView.contentSize.height)) {
+            id obj = weakSelf.ts[0];
+            [weakSelf.ts removeObject:obj];
+            [weakSelf performSelector:@selector(fd_precacheIndexPathIfNeeded:)
+                             onThread:[NSThread mainThread]
+                           withObject:obj
+                        waitUntilDone:NO
+                                modes:@[NSRunLoopCommonModes]];
         }
     });
     
-    CFRunLoopAddObserver(runLoop, observer, runLoopMode);
-    
-    
-    
-    
+    CFRunLoopAddObserver(runLoop, self.runLoopObserver, runLoopMode);
 }
-
-
-
-- (void)fd_precacheIfNeededDefault:(void (^)())block
-{
-    
-    
-    if (self.statrt2 ) {
-        return;
-    }
-    
-    self.statrt2 = YES;
-    //    if (!self.fd_precacheEnabled) {
-    //        return;
-    //    }
-    //
-    //    // Delegate could use "rowHeight" rather than implements this method.
-    //    if (![self.delegate respondsToSelector:@selector(tableView:heightForRowAtIndexPath:)]) {
-    //        return;
-    //    }
-    
-    CFRunLoopRef runLoop = CFRunLoopGetCurrent();
-    
-    // This is a idle mode of RunLoop, when UIScrollView scrolls, it jumps into "UITrackingRunLoopMode"
-    // and won't perform any cache task to keep a smooth scroll.
-    CFStringRef runLoopMode = NSDefaultRunLoopMode;
-    
-    // Collect all index paths to be precached.
-    //    NSMutableArray *mutableIndexPathsToBePrecached = self.fd_allIndexPathsToBePrecached.mutableCopy;
-    
-    // Setup a observer to get a perfect moment for precaching tasks.
-    // We use a "kCFRunLoopBeforeWaiting" state to keep RunLoop has done everything and about to sleep
-    // (mach_msg_trap), when all tasks finish, it will remove itself.
-    CFRunLoopObserverRef observer = CFRunLoopObserverCreateWithHandler
-    (kCFAllocatorDefault, kCFRunLoopBeforeWaiting, true, 0, ^(CFRunLoopObserverRef observer, CFRunLoopActivity _) {
-        // Remove observer when all precache tasks are done.
-//        if (self.ts.count == 0) {
-//            CFRunLoopRemoveObserver(runLoop, observer, runLoopMode);
-//            CFRelease(observer);
-//            return;
-//        }
-        // Pop first index path record as this RunLoop iteration's task.
-        //        NSIndexPath *indexPath = mutableIndexPathsToBePrecached.firstObject;
-        //        [mutableIndexPathsToBePrecached removeObject:indexPath];
-        
-        
-        if (self.statrt == NO && self.ts.count > 0) {
-            
-            
-            NSLog(@"fd_precacheIfNeededDefault");
-            
-            [self.ts removeObject:0];
-            // This method creates a "source 0" task in "idle" mode of RunLoop, and will be
-            // performed in a future RunLoop iteration only when user is not scrolling.
-            [self performSelector:@selector(fd_precacheIndexPathIfNeeded:)
-                         onThread:[NSThread mainThread]
-                       withObject:self.ts[0]
-                    waitUntilDone:NO
-                            modes:@[NSRunLoopCommonModes]];
-        }
-        
-        
-        
-    });
-    
-    CFRunLoopAddObserver(runLoop, observer, runLoopMode);
-}
-
 
 - (void)fd_precacheIndexPathIfNeeded:(TTT)t
 {
-    t();
-    self.totalHeight += [self.tableView.delegate tableView:self.tableView heightForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0 ]];
+    t([NSIndexPath indexPathForRow:self.staticContentCells.count inSection:0]);
+    self.totalHeight += [self.tableView.delegate tableView:self.tableView heightForRowAtIndexPath:[NSIndexPath indexPathForRow:self.staticContentCells.count-1 inSection:0]];
 }
 
 - (YStaticContentTableViewCellExtraInfo *)addCell:(YStaticContentTableViewCellBlock)configurationBlock
@@ -323,21 +198,6 @@ static char emailAddressKey;
     objc_setAssociatedObject(self, &emailAddressKey, @(s), OBJC_ASSOCIATION_RETAIN);
 }
 
-
-
-static char emailAddressKey2;
-- (BOOL)statrt2
-{
-    return [objc_getAssociatedObject(self, &emailAddressKey2) boolValue];
-}
-
-- (void)setStatrt2:(BOOL)s {
-    objc_setAssociatedObject(self, &emailAddressKey2, @(s), OBJC_ASSOCIATION_RETAIN);
-}
-
-
-
-
 - (NSInteger)numberOfRowInSection {
     return [self staticContentCells].count;
 }
@@ -362,6 +222,14 @@ static char emailAddressKey2;
         _reuseIdentifiers = [NSMutableSet set];
     }
     return _reuseIdentifiers;
+}
+
+- (void)dealloc
+{
+    if (self.statrt) {
+        CFRunLoopRemoveObserver(CFRunLoopGetCurrent(), self.runLoopObserver, kCFRunLoopCommonModes);
+        CFRelease(self.runLoopObserver);
+    }
 }
 
 @end
