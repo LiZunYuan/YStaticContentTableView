@@ -45,10 +45,9 @@
         atIndexPath:(NSIndexPath *)indexPath animated:(BOOL)animated updateView:(BOOL)updateView {
     __weak typeof(self) weakSelf = self;
     
+    YStaticContentTableViewCellExtraInfo *staticContentCell = [[YStaticContentTableViewCellExtraInfo alloc] init];
     [self.ts addObject:^(NSIndexPath *indexPath){
-        
         NSIndexPath *cindexPath = [NSIndexPath indexPathForRow:indexPath.row inSection:indexPath.section];
-        YStaticContentTableViewCellExtraInfo *staticContentCell = [[YStaticContentTableViewCellExtraInfo alloc] init];
         staticContentCell.configureBlock = configurationBlock;
         staticContentCell.whenSelectedBlock = whenSelectedBlock;
         configurationBlock(staticContentCell, nil, cindexPath);
@@ -71,7 +70,7 @@
     
     
     [self fd_precacheIfNeeded];
-    return nil;
+    return staticContentCell;
 }
 
 

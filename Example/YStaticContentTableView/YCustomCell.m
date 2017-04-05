@@ -30,7 +30,7 @@
     
 //    sleep(1);
     
-//    usleep(100000); //1000000 = 1s
+    usleep(100000); //1000000 = 1s
     
     return CGSizeMake(size.width, 44.5);
 }
