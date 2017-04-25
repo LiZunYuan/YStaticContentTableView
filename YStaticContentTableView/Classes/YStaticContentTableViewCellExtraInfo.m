@@ -15,7 +15,7 @@
     self.editable = NO;
     self.moveable = NO;
     
-    self.layoutType = YStaticContentLayoutTypeFrame;
+    self.layoutType = YStaticContentLayoutTypeUnknow;
     self.heightCacheType = YStaticContentHeightCacheTypeIndexPath;
 
 	return self;
